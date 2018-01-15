@@ -164,6 +164,7 @@
 			isa = PBXGroup;
 			children = (
 				91C68CDD2005F25300847C97 /* CHD.entitlements */,
+				91ADD486200C89D80084B922 /* Constant */,
 				911C586C1FEA6CCF00D2CB57 /* APIManager */,
 				911C58751FEA6CFF00D2CB57 /* Cells */,
 				911C587A1FEA6D3400D2CB57 /* UI Screens */,
@@ -211,9 +212,7 @@
 			isa = PBXGroup;
 			children = (
 				911C58681FEA6CC000D2CB57 /* APIManager.swift */,
-				911C58671FEA6CC000D2CB57 /* Constants.swift */,
 				911C58661FEA6CC000D2CB57 /* HTTPAPICalling.swift */,
-				91B6E1931FED062B00A9A532 /* ReachabilityManager.swift */,
 			);
 			name = APIManager;
 			sourceTree = "<group>";
@@ -242,11 +241,20 @@
 		911C58991FEA6D9200D2CB57 /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
+				91B6E1931FED062B00A9A532 /* ReachabilityManager.swift */,
 				911C57DE1FEA6B7400D2CB57 /* Assets.xcassets */,
 				911C57E31FEA6B7400D2CB57 /* Info.plist */,
 				911C58651FEA6CBF00D2CB57 /* CHD-Bridging-Header.h */,
 			);
 			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+		91ADD486200C89D80084B922 /* Constant */ = {
+			isa = PBXGroup;
+			children = (
+				911C58671FEA6CC000D2CB57 /* Constants.swift */,
+			);
+			name = Constant;
 			sourceTree = "<group>";
 		};
 		99D360FEFEC1D133908510F9 /* Frameworks */ = {

@@ -8,6 +8,11 @@
 
 import UIKit
 
+struct UserCredintial {
+    var userID: Int?
+    var emailID: String?
+}
+
 class CustomTextField: UITextField {
     
     let padding = UIEdgeInsets(top: 0, left: 5, bottom: 0, right: 5);
@@ -253,6 +258,11 @@ class LoginViewController: UIViewController {
     
     @objc func loginButtonDidClicked(_ sender: UIButton) {
         print("logged In button did clicked")
+        let requestDict = ["user_email": "\(emailTextField.text)",
+                           "password": "\(passwordTextField.text)"]
+        loginWebService(requestDict: requestDict) { (userCredential) in
+            
+        }
     }
     
     @objc func forgotPasswordButtonDidClicked(_ sender: UIButton) {
@@ -272,6 +282,14 @@ class LoginViewController: UIViewController {
         let homeViewCtrl = FirstViewController()
         self.navigationController?.pushViewController(homeViewCtrl, animated: true)
     }
+    
+    func loginWebService(requestDict: [String: String], requestMethod: String,requestURL: String , completion: @escaping (UserCredintial) -> ()) {
+        let url = URL(string: requestURL)
+        var request = URLRequest(url: url!)
+        request.httpMethod = requestMethod
+        request.addValue("application/json", forHTTPHeaderField: "Content-Type")
+        
+        }
 }
 
 extension String {
@@ -284,12 +302,12 @@ extension String {
 
 extension LoginViewController: UITextFieldDelegate {
     func textFieldDidEndEditing(_ textField: UITextField) {
-        if let _ = emailTextField.text?.isEmpty {
+        if (emailTextField.text?.isEmpty)! {
             //do nothing
         } else {
             guard let isValid = emailTextField.text?.isValidEmail() else { return }
             if !isValid {
-                let alert = UIAlertController(title: "email no valid", message: "please enter a valid email address", preferredStyle: .alert)
+                let alert = UIAlertController(title: "This is not an Email", message: "please enter a valid email address", preferredStyle: .alert)
                 let action = UIAlertAction(title: "OK", style: .default) { (_) in
                     self.emailTextField.becomeFirstResponder()
                 }
