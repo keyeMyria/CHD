@@ -8,9 +8,20 @@
 
 import UIKit
 
-struct UserCredintial {
-    var userID: Int?
-    var emailID: String?
+struct Result: Decodable {
+    var errorCode: String?
+    
+    var result: UserCredintial?
+}
+
+struct UserCredintial: Decodable {
+    var user_id: String?
+    var user_name: String?
+    var user_email: String?
+    var first_name: String?
+    var last_name: String?
+    var user_token: String?
+    var user_status: String?
 }
 
 class CustomTextField: UITextField {
@@ -30,7 +41,15 @@ class CustomTextField: UITextField {
     }
 }
 
-class LoginViewController: UIViewController {
+class LoginViewController: BaseViewController {
+    
+    class var sharedInstance :LoginViewController {
+        struct Singleton {
+            static let instance = LoginViewController()
+        }
+        
+        return Singleton.instance
+    }
     
     private lazy var blurView: UIView = {
         let view = UIView()
@@ -167,6 +186,26 @@ class LoginViewController: UIViewController {
         return imageView
     }()
     
+    private lazy var loadingIndicator: UIView = {
+        let view = UIView()
+        view.frame.size = CGSize(width: 210, height: 100)
+        view.layer.cornerRadius = 6
+        view.addSubview(activityIndicator)
+        activityIndicator.color = .white
+        activityIndicator.frame = CGRect(x: 20, y: view.frame.height / 2 - 15, width: 30, height: 30)
+        activityIndicator.startAnimating()
+        let label = UILabel()
+        label.text = "Please wait..."
+        label.textColor = .white
+        label.frame = CGRect(x: 80, y: view.frame.height / 2 - 15, width: 150, height: 30)
+        view.addSubview(label)
+        view.backgroundColor = .black
+        view.alpha = 0
+        return view
+    }()
+    
+    let appDelegate = UIApplication.shared.delegate as! AppDelegate
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         addBackgroundImage()
@@ -258,15 +297,39 @@ class LoginViewController: UIViewController {
     
     @objc func loginButtonDidClicked(_ sender: UIButton) {
         print("logged In button did clicked")
-        let requestDict = ["user_email": "\(emailTextField.text)",
-                           "password": "\(passwordTextField.text)"]
-        loginWebService(requestDict: requestDict) { (userCredential) in
-            
+        loadingIndicator.center = view.center
+        loadingIndicator.alpha = 0.9
+        appDelegate.window?.addSubview(loadingIndicator)
+        let requestDict = ["user_email": "\(String(describing: emailTextField.text!))",
+            "password": "\(String(describing: passwordTextField.text!))"]
+        loginWebService(requestParaDict: requestDict, requestMethod: POST, requestURL: LOGIN_URL) { [weak self] (result) in
+            if let strongSelf = self {
+                if result.errorCode == "1" {
+                    guard let userID = result.result?.user_id else {return}
+                    UserDefaults.standard.set(userID, forKey: "userID")
+                    //UserDefaults.standard.set(true, forKey: "isLoggedInSkipped")
+                    let homeViewCtrl = FirstViewController()
+                    DispatchQueue.main.async {
+                        strongSelf.appDelegate.setupTabBarController()
+                        strongSelf.loadingIndicator.alpha = 0
+                        strongSelf.navigationController?.pushViewController(homeViewCtrl, animated: true)
+                    }
+                    
+                } else {
+                    DispatchQueue.main.async {
+                        strongSelf.loadingIndicator.alpha = 0
+                        strongSelf.displayAlertView("Login Failed", message: "Incorrect username or password.", handler: nil)
+                    }
+                    
+                }
+            }
         }
     }
     
     @objc func forgotPasswordButtonDidClicked(_ sender: UIButton) {
         print("Forgot password button did clicked")
+        let forgotPassViewCtrl = ForgotPasswordViewController()
+        self.navigationController?.pushViewController(forgotPassViewCtrl, animated: true)
     }
 
     override func viewWillAppear(_ animated: Bool) {
@@ -280,16 +343,38 @@ class LoginViewController: UIViewController {
             self.skipButton.removeFromSuperview()
         }
         let homeViewCtrl = FirstViewController()
+        self.appDelegate.setupTabBarController()
         self.navigationController?.pushViewController(homeViewCtrl, animated: true)
     }
     
-    func loginWebService(requestDict: [String: String], requestMethod: String,requestURL: String , completion: @escaping (UserCredintial) -> ()) {
+    func loginWebService(requestParaDict: [String: String]?, requestMethod: String,requestURL: String , completion: @escaping (Result) -> ()) {
         let url = URL(string: requestURL)
         var request = URLRequest(url: url!)
         request.httpMethod = requestMethod
         request.addValue("application/json", forHTTPHeaderField: "Content-Type")
-        
+        if let requestDict = requestParaDict {
+            do{
+                let jsonData = try JSONSerialization.data(withJSONObject: requestDict, options: .prettyPrinted)
+                request.httpBody = jsonData
+            } catch {
+                print(error)
+            }
         }
+        
+        URLSession.shared.dataTask(with: request) { (data, _, error) in
+            if error != nil {
+                print(error?.localizedDescription ?? "error")
+            } else {
+                do {
+                    guard let data = data else {return}
+                    let parsedData = try JSONDecoder().decode(Result.self, from: data)
+                    completion(parsedData)
+                } catch {
+                    print(error.localizedDescription)
+                }
+            }
+            }.resume()
+    }
 }
 
 extension String {
@@ -307,12 +392,9 @@ extension LoginViewController: UITextFieldDelegate {
         } else {
             guard let isValid = emailTextField.text?.isValidEmail() else { return }
             if !isValid {
-                let alert = UIAlertController(title: "This is not an Email", message: "please enter a valid email address", preferredStyle: .alert)
-                let action = UIAlertAction(title: "OK", style: .default) { (_) in
+                displayAlertView("This is not an Email", message: "please enter a valid email address", handler: { (_) in
                     self.emailTextField.becomeFirstResponder()
-                }
-                alert.addAction(action)
-                self.navigationController?.present(alert, animated: true, completion: nil)
+                })
             }
         }
     }

@@ -36,7 +36,7 @@ struct PostData: Decodable {
     let post_date: String?
 }
 
-class HTTPAPICalling {
+class HTTPAPICalling{
 
     class var sharedInstance :HTTPAPICalling {
         struct Singleton {
@@ -60,7 +60,7 @@ class HTTPAPICalling {
                 print(error)
             }
         }
-        URLSession.shared.dataTask(with:request) { (data, response, error) in
+        URLSession.shared.dataTask(with:request) { (data, _, error) in
             if error != nil {
                 self.failuareDialog(title: "No internet connection", message: "Please check your internet connection and try again")
             } else {
@@ -71,7 +71,7 @@ class HTTPAPICalling {
                     completion(parsedData)
                 }
                 catch {
-                    self.failuareDialog(title: "Something went wrong", message: "It's not you, it's us. Sorry for inconvenience")
+                   self.failuareDialog(title: "Something went wrong", message: "It's not you, it's us. Sorry for inconvenience")
                 }
             }
             
@@ -92,7 +92,7 @@ class HTTPAPICalling {
                 print(error)
             }
         }
-        URLSession.shared.dataTask(with:request) { (data, response, error) in
+        URLSession.shared.dataTask(with:request) { (data, _, error) in
             if error != nil {
                 self.failuareDialog(title: "No internet connection", message: "Please check your internet connection and try again")
             } else {
@@ -112,9 +112,7 @@ class HTTPAPICalling {
     func failuareDialog(title: String, message: String) {
         print("showing alert", message)
         let alert = UIAlertController(title: title, message: message, preferredStyle: .alert)
-        let action = UIAlertAction(title: "OK", style: .default, handler: { (action) in
-            print("OK tapped")
-        })
+        let action = UIAlertAction(title: "OK", style: .default, handler: nil)
         alert.addAction(action)
         
         let appDelegate = UIApplication.shared.delegate as! AppDelegate

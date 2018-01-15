@@ -19,41 +19,10 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         // Override point for customization after application launch.
         self.window = UIWindow(frame: UIScreen.main.bounds)
         
-        let navCtrl = UINavigationController()
-        let layout = UICollectionViewFlowLayout()
-        layout.scrollDirection = .horizontal
-        let introScreen = IntroCollectionViewController(collectionViewLayout: layout)
-        navCtrl.viewControllers = [introScreen]
-        
-        let nav1 = UINavigationController()
-        let first = FirstViewController(nibName: nil, bundle: nil)
-        nav1.viewControllers = [first]
-        
-        let second = SecondViewController(nibName: nil, bundle: nil)
-        let nav2 = UINavigationController()
-        nav2.viewControllers = [second]
-        
-        let third = ThirdViewController(nibName: nil, bundle: nil)
-        let nav3 = UINavigationController()
-        nav3.viewControllers = [third]
-        
-        let icon1 = UITabBarItem(title: "Home", image: UIImage(named: "icons8-home.png"), selectedImage: UIImage(named: "icons8-home.png"))
-        let icon2 = UITabBarItem(title: "News", image: UIImage(named: "icons8-news.png"), selectedImage: UIImage(named: "icons8-news.png"))
-        let icon3 = UITabBarItem(title: "Notification", image: UIImage(named: "icons8-appointment_reminders.png"), selectedImage: UIImage(named: "icons8-appointment_reminders.png"))
-
-        nav1.tabBarItem = icon1
-        nav2.tabBarItem = icon2
-        nav3.tabBarItem = icon3
-        
-        let tabs = UITabBarController()
-        tabs.viewControllers = [nav1, nav2, nav3]
-        
         if !UserDefaults.standard.bool(forKey: "isLoggedInSkipped") {
-            self.window?.rootViewController = navCtrl
-            self.window?.makeKeyAndVisible()
+            setupLoginNavigationController()
         } else {
-            self.window!.rootViewController = tabs;
-            self.window?.makeKeyAndVisible();
+            setupTabBarController()
         }
         ReachabilityManager.shared.startMonitoring()
         
@@ -76,6 +45,46 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         application.registerForRemoteNotifications()
         
         return true
+    }
+    
+    func setupLoginNavigationController() {
+        let navCtrl = UINavigationController()
+        let layout = UICollectionViewFlowLayout()
+        layout.scrollDirection = .horizontal
+        let introScreen = IntroCollectionViewController(collectionViewLayout: layout)
+        navCtrl.viewControllers = [introScreen]
+        
+        self.window?.rootViewController = navCtrl
+        self.window?.makeKeyAndVisible()
+        
+    }
+    
+    func setupTabBarController() {
+        let nav1 = UINavigationController()
+        let first = FirstViewController(nibName: nil, bundle: nil)
+        nav1.viewControllers = [first]
+        
+        let second = SecondViewController(nibName: nil, bundle: nil)
+        let nav2 = UINavigationController()
+        nav2.viewControllers = [second]
+        
+        let third = ThirdViewController(nibName: nil, bundle: nil)
+        let nav3 = UINavigationController()
+        nav3.viewControllers = [third]
+        
+        let icon1 = UITabBarItem(title: "Home", image: UIImage(named: "icons8-home.png"), selectedImage: UIImage(named: "icons8-home.png"))
+        let icon2 = UITabBarItem(title: "News", image: UIImage(named: "icons8-news.png"), selectedImage: UIImage(named: "icons8-news.png"))
+        let icon3 = UITabBarItem(title: "Notification", image: UIImage(named: "icons8-appointment_reminders.png"), selectedImage: UIImage(named: "icons8-appointment_reminders.png"))
+        
+        nav1.tabBarItem = icon1
+        nav2.tabBarItem = icon2
+        nav3.tabBarItem = icon3
+        
+        let tabs = UITabBarController()
+        tabs.viewControllers = [nav1, nav2, nav3]
+        
+        self.window!.rootViewController = tabs;
+        self.window?.makeKeyAndVisible();
     }
     
     func application(_ application: UIApplication,
