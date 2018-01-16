@@ -305,12 +305,13 @@ class LoginViewController: BaseViewController {
         loginWebService(requestParaDict: requestDict, requestMethod: POST, requestURL: LOGIN_URL) { [weak self] (result) in
             if let strongSelf = self {
                 if result.errorCode == "1" {
-                    guard let userID = result.result?.user_id else {return}
-                    UserDefaults.standard.set(userID, forKey: "userID")
-                    //UserDefaults.standard.set(true, forKey: "isLoggedInSkipped")
-                    let homeViewCtrl = FirstViewController()
+                    if let userID = result.result?.user_id {
+                        UserDefaults.standard.set(userID, forKey: "userID")
+                    }
+                    UserDefaults.standard.set(true, forKey: "isLoggedInSkipped")
+                    let homeViewCtrl = FavouriteViewController()
                     DispatchQueue.main.async {
-                        strongSelf.appDelegate.setupTabBarController()
+                        //strongSelf.appDelegate.setupTabBarController()
                         strongSelf.loadingIndicator.alpha = 0
                         strongSelf.navigationController?.pushViewController(homeViewCtrl, animated: true)
                     }
@@ -342,12 +343,13 @@ class LoginViewController: BaseViewController {
         DispatchQueue.main.async {
             self.skipButton.removeFromSuperview()
         }
+        UserDefaults.standard.set(true, forKey: "isLoggedInSkipped")
         let homeViewCtrl = FirstViewController()
         self.appDelegate.setupTabBarController()
         self.navigationController?.pushViewController(homeViewCtrl, animated: true)
     }
     
-    func loginWebService(requestParaDict: [String: String]?, requestMethod: String,requestURL: String , completion: @escaping (Result) -> ()) {
+    func loginWebService(requestParaDict: [String: Any]?, requestMethod: String,requestURL: String , completion: @escaping (Result) -> ()) {
         let url = URL(string: requestURL)
         var request = URLRequest(url: url!)
         request.httpMethod = requestMethod

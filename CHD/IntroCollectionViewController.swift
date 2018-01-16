@@ -134,7 +134,7 @@ class IntroCollectionViewController: UICollectionViewController, UICollectionVie
         DispatchQueue.main.async {
             self.skipButton.removeFromSuperview()
         }
-       // UserDefaults.standard.set(true, forKey: "isLoggedInSkipped")
+        
         let homeViewCtrl = LoginViewController()
         self.navigationController?.pushViewController(homeViewCtrl, animated: true)
     }

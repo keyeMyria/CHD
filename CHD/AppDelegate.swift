@@ -39,11 +39,10 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         // Remove before app release.
         gai.logger.logLevel = .verbose;
         
-        
         let settings = UIUserNotificationSettings(types: [.alert, .badge, .sound], categories: nil)
         application.registerUserNotificationSettings(settings)
         application.registerForRemoteNotifications()
-        
+
         return true
     }
     
@@ -96,8 +95,11 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         
         let token = tokenParts.joined()
         print("Device Token: \(token)")
+        UserDefaults.standard.set(token, forKey: "deviceToken")
     }
+
     
+
     func application(_ application: UIApplication,
                      didFailToRegisterForRemoteNotificationsWithError error: Error) {
         print("Failed to register: \(error)")

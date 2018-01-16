@@ -98,6 +98,28 @@ class APIManager {
             complition(dict)
         }
     }
+
+    func registerDevice(requestURL: String, completion: @escaping(NSDictionary) -> ()) {
+        var userID: String = ""
+        if isKeyPresentInUserDefaults(key: "userID") {
+            userID = UserDefaults.standard.value(forKey: "userID") as! String
+        }
+
+        if let deviceToken = UserDefaults.standard.value(forKey: "deviceToken"){
+            let requestDict = ["device_token":deviceToken,
+                               "platform":"0",
+                               "user_id":userID,
+                               "reference":"pushnotification"]
+
+            HTTPAPICalling.sharedInstance.fetchAPIByRegularConvention(requestMethod: POST, requestURL: requestURL, requestParaDic: requestDict as? [String : String], completion: { (dict) in
+                completion(dict!)
+            })
+        }
+    }
+
+    func isKeyPresentInUserDefaults(key: String) -> Bool {
+        return UserDefaults.standard.object(forKey: key) != nil
+    }
     
     func numberOfRowsInSection() -> Int{
         //return array.count

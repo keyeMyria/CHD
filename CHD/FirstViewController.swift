@@ -337,6 +337,20 @@ class FirstViewController: UITableViewController {
         
         APIFailuareHandler()
     }
+
+    override func viewDidAppear(_ animated: Bool) {
+        registerDeviceForPushNotification()
+    }
+
+    func registerDeviceForPushNotification() {
+        if !(UserDefaults.standard.bool(forKey: "deviceRegistered")) {
+            APIManager.sharedInstance.registerDevice(requestURL: REGISTER_DEVICE_URL) { (dict) in
+                UserDefaults.standard.set(true, forKey: "deviceRegistered")
+                print("Device is registered for push notification")
+            }
+            // add call for http://uat.mobodesk.com/chd-api/api/?page=registered_device
+        }
+    }
     
     //// TableView datasoure and delegate
     
