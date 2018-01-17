@@ -25,6 +25,24 @@ class MyProfileViewController: UIViewController {
     let backButton = UIButton()
     let backView = UIView()
 
+    private lazy var loadingIndicator: UIView = {
+        let view = UIView()
+        view.frame.size = CGSize(width: 210, height: 100)
+        view.layer.cornerRadius = 6
+        view.addSubview(activityIndicator)
+        activityIndicator.color = .white
+        activityIndicator.frame = CGRect(x: 20, y: view.frame.height / 2 - 15, width: 30, height: 30)
+        activityIndicator.startAnimating()
+        let label = UILabel()
+        label.text = "Please wait..."
+        label.textColor = .white
+        label.frame = CGRect(x: 80, y: view.frame.height / 2 - 15, width: 150, height: 30)
+        view.addSubview(label)
+        view.backgroundColor = .black
+        view.alpha = 0
+        return view
+    }()
+
     override func viewDidLoad() {
         super.viewDidLoad()
         self.view.backgroundColor = .white
@@ -53,9 +71,12 @@ class MyProfileViewController: UIViewController {
 
     }
     @IBAction func submitButtonDidClicked(_ sender: UIButton) {
+        loadingIndicator.center = view.center
+        loadingIndicator.alpha = 0.9
         sendUserData(requestURL: ACCOUNT_SETTING_URL) { [weak self] (dict) in
-            if let _ = self {
+            if let strongSelf = self {
                 print(dict["errorCode"] as! String)
+                strongSelf.loadingIndicator.alpha = 0
             }
         }
     }
