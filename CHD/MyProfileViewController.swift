@@ -76,6 +76,7 @@ class MyProfileViewController: UIViewController {
         sendUserData(requestURL: ACCOUNT_SETTING_URL) { [weak self] (dict) in
             if let strongSelf = self {
                 print(dict["errorCode"] as! String)
+                
                 strongSelf.loadingIndicator.alpha = 0
             }
         }
