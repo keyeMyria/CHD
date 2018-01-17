@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		284AA221200F4DEC00138B96 /* NotificationItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 284AA220200F4DEC00138B96 /* NotificationItem.swift */; };
 		9106C2C5200CB3630049A950 /* ForgotPasswordViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9106C2C4200CB3630049A950 /* ForgotPasswordViewController.swift */; };
 		9106C2C7200CB8EC0049A950 /* AlertViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9106C2C6200CB8EC0049A950 /* AlertViewController.swift */; };
 		911811BC200DD01E00096B30 /* CategoryTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 911811BB200DD01E00096B30 /* CategoryTableViewCell.swift */; };
@@ -64,6 +65,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		284AA220200F4DEC00138B96 /* NotificationItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationItem.swift; sourceTree = "<group>"; };
 		546222FA63E6D06A8B6ED42D /* Pods-CHD.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-CHD.debug.xcconfig"; path = "Pods/Target Support Files/Pods-CHD/Pods-CHD.debug.xcconfig"; sourceTree = "<group>"; };
 		7BA87FBA58F848DEE0F24339 /* Pods-CHD.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-CHD.release.xcconfig"; path = "Pods/Target Support Files/Pods-CHD/Pods-CHD.release.xcconfig"; sourceTree = "<group>"; };
 		9106C2C4200CB3630049A950 /* ForgotPasswordViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ForgotPasswordViewController.swift; sourceTree = "<group>"; };
@@ -181,6 +183,7 @@
 				911C58991FEA6D9200D2CB57 /* Supporting Files */,
 				911C58971FEA6D7F00D2CB57 /* AppDelegate.swift */,
 				911C587F1FEA6D6D00D2CB57 /* LeftViewController.swift */,
+				284AA220200F4DEC00138B96 /* NotificationItem.swift */,
 				91521F57200769330096B4D5 /* IntroCollectionViewController.swift */,
 				91521F5D2007980C0096B4D5 /* LoginViewController.swift */,
 				9106C2C4200CB3630049A950 /* ForgotPasswordViewController.swift */,
@@ -354,6 +357,9 @@
 						LastSwiftMigration = 0910;
 						ProvisioningStyle = Manual;
 						SystemCapabilities = {
+							com.apple.BackgroundModes = {
+								enabled = 1;
+							};
 							com.apple.Push = {
 								enabled = 1;
 							};
@@ -503,6 +509,7 @@
 				9106C2C7200CB8EC0049A950 /* AlertViewController.swift in Sources */,
 				9106C2C5200CB3630049A950 /* ForgotPasswordViewController.swift in Sources */,
 				9180817C200F235D009504D3 /* MyProfileViewController.swift in Sources */,
+				284AA221200F4DEC00138B96 /* NotificationItem.swift in Sources */,
 				911C58731FEA6CEF00D2CB57 /* PostTableViewCell.swift in Sources */,
 				91521F5A20076E8C0096B4D5 /* IntroPagesCollectionViewCell.swift in Sources */,
 				911C58921FEA6D7000D2CB57 /* ReviewTableViewController.swift in Sources */,

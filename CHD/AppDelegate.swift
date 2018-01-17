@@ -38,20 +38,33 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         // Optional: set Logger to VERBOSE for debug information.
         // Remove before app release.
         gai.logger.logLevel = .verbose;
+        
+        if let notification = launchOptions?[.remoteNotification] as? [String: AnyObject] {
+            // 2
+            let aps = notification["aps"] as! [String: AnyObject]
+            
+            // 3
+           // (window?.rootViewController as? UITabBarController)?.selectedIndex = 2
+        }
 
         return true
     }
     
     func setupLoginNavigationController(_ application: UIApplication) {
+        
+        let settings = UIUserNotificationSettings(types: [.alert, .badge, .sound], categories: nil)
+        application.registerUserNotificationSettings(settings)
+        application.registerForRemoteNotifications()
+        
+        
         let navCtrl = UINavigationController()
         let layout = UICollectionViewFlowLayout()
         layout.scrollDirection = .horizontal
         let introScreen = IntroCollectionViewController(collectionViewLayout: layout)
         navCtrl.viewControllers = [introScreen]
+        
+    
 
-        let settings = UIUserNotificationSettings(types: [.alert, .badge, .sound], categories: nil)
-        application.registerUserNotificationSettings(settings)
-        application.registerForRemoteNotifications()
         
         self.window?.rootViewController = navCtrl
         self.window?.makeKeyAndVisible()
@@ -144,6 +157,36 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         //            alert.show()
         //        }
         
+        
+    }
+    
+    func application(_ application: UIApplication,didReceiveRemoteNotification userInfo: [AnyHashable : Any],
+                     fetchCompletionHandler completionHandler: @escaping (UIBackgroundFetchResult) -> Void) {
+        
+        let aps = userInfo["aps"] as! [String: AnyObject]
+        let alertMsg = aps["alert"] as! String
+        let urlLink = aps["link_url"] as! String
+        
+        
+        let userDefaults = UserDefaults.standard
+       // var arrayOfNotication = userDefaults.array(forKey: "notifications")
+        //if arrayOfNotication == nil
+       // {
+           // arrayOfNotication = NSMutableArray.init() as! [NotificationItem];
+//            let notification = NotificationItem.init(titleString: alertMsg, url_Link: urlLink)
+//            arrayOfNotication?.append(notification);
+      //  }else
+       // {
+        
+         //   arrayOfNotication?.append(notification);
+       // }
+        
+        //let notificationData = NSKeyedArchiver.archivedData(withRootObject: arrayOfNotication ?? "")
+        
+        userDefaults.set(alertMsg, forKey:"title")
+        userDefaults.set(urlLink, forKey: "url")
+        userDefaults.synchronize()
+        (window?.rootViewController as? UITabBarController)?.selectedIndex = 2
         
     }
 
