@@ -138,7 +138,7 @@ class SecondViewController: UITableViewController {
                         switch indexPath.row{
                         case 0:
                             print("My Account")
-                            let aboutUs = UserAccountViewController()
+                            let aboutUs = MyProfileViewController()
                             //                            aboutUs.pageTitle = "Advertise with Us"
                             //                            aboutUs.pageURL = ADVERTISE_WITH_US_URL
                             //                            aboutUs.hidesBottomBarWhenPushed = true

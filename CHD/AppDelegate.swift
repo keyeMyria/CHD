@@ -20,7 +20,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         self.window = UIWindow(frame: UIScreen.main.bounds)
         
         if !UserDefaults.standard.bool(forKey: "isLoggedInSkipped") {
-            setupLoginNavigationController()
+            setupLoginNavigationController(application)
         } else {
             setupTabBarController()
         }
@@ -38,20 +38,20 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         // Optional: set Logger to VERBOSE for debug information.
         // Remove before app release.
         gai.logger.logLevel = .verbose;
-        
-        let settings = UIUserNotificationSettings(types: [.alert, .badge, .sound], categories: nil)
-        application.registerUserNotificationSettings(settings)
-        application.registerForRemoteNotifications()
 
         return true
     }
     
-    func setupLoginNavigationController() {
+    func setupLoginNavigationController(_ application: UIApplication) {
         let navCtrl = UINavigationController()
         let layout = UICollectionViewFlowLayout()
         layout.scrollDirection = .horizontal
         let introScreen = IntroCollectionViewController(collectionViewLayout: layout)
         navCtrl.viewControllers = [introScreen]
+
+        let settings = UIUserNotificationSettings(types: [.alert, .badge, .sound], categories: nil)
+        application.registerUserNotificationSettings(settings)
+        application.registerForRemoteNotifications()
         
         self.window?.rootViewController = navCtrl
         self.window?.makeKeyAndVisible()

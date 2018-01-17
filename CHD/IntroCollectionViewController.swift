@@ -33,7 +33,7 @@ class IntroCollectionViewController: UICollectionViewController, UICollectionVie
         var button = UIButton()
         button.setTitle("Skip", for: .normal)
         button.translatesAutoresizingMaskIntoConstraints = false
-        button.setTitleColor(.lightGray, for: .normal)
+        button.setTitleColor(.red, for: .normal)
         return button
     }()
     

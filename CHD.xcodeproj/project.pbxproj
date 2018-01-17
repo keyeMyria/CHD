@@ -39,9 +39,10 @@
 		91521F58200769330096B4D5 /* IntroCollectionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 91521F57200769330096B4D5 /* IntroCollectionViewController.swift */; };
 		91521F5A20076E8C0096B4D5 /* IntroPagesCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 91521F5920076E8C0096B4D5 /* IntroPagesCollectionViewCell.swift */; };
 		91521F5E2007980C0096B4D5 /* LoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 91521F5D2007980C0096B4D5 /* LoginViewController.swift */; };
+		9180817C200F235D009504D3 /* MyProfileViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9180817A200F235D009504D3 /* MyProfileViewController.swift */; };
+		9180817D200F235D009504D3 /* MyProfileViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 9180817B200F235D009504D3 /* MyProfileViewController.xib */; };
 		918A0B24200DCE9A0019D72A /* FavouriteViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 918A0B23200DCE9A0019D72A /* FavouriteViewController.swift */; };
 		91B6E1941FED062B00A9A532 /* ReachabilityManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 91B6E1931FED062B00A9A532 /* ReachabilityManager.swift */; };
-		91EE4D4F2008E725000F9DF9 /* UserAccountViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 91EE4D4E2008E725000F9DF9 /* UserAccountViewController.swift */; };
 		F93F4CEE91A688C662FF93E7 /* Pods_CHD.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 980EFB060680880E445D8873 /* Pods_CHD.framework */; };
 /* End PBXBuildFile section */
 
@@ -104,10 +105,11 @@
 		91521F57200769330096B4D5 /* IntroCollectionViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IntroCollectionViewController.swift; sourceTree = "<group>"; };
 		91521F5920076E8C0096B4D5 /* IntroPagesCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IntroPagesCollectionViewCell.swift; sourceTree = "<group>"; };
 		91521F5D2007980C0096B4D5 /* LoginViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginViewController.swift; sourceTree = "<group>"; };
+		9180817A200F235D009504D3 /* MyProfileViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyProfileViewController.swift; sourceTree = "<group>"; };
+		9180817B200F235D009504D3 /* MyProfileViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = MyProfileViewController.xib; sourceTree = "<group>"; };
 		918A0B23200DCE9A0019D72A /* FavouriteViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FavouriteViewController.swift; sourceTree = "<group>"; };
 		91B6E1931FED062B00A9A532 /* ReachabilityManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ReachabilityManager.swift; sourceTree = "<group>"; };
 		91C68CDD2005F25300847C97 /* CHD.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = CHD.entitlements; sourceTree = "<group>"; };
-		91EE4D4E2008E725000F9DF9 /* UserAccountViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserAccountViewController.swift; sourceTree = "<group>"; };
 		980EFB060680880E445D8873 /* Pods_CHD.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_CHD.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
@@ -195,7 +197,8 @@
 				911C58881FEA6D7000D2CB57 /* AdvertWithUsViewController.swift */,
 				911C587B1FEA6D6D00D2CB57 /* ContactUsViewController.swift */,
 				911C587C1FEA6D6D00D2CB57 /* SearchTableViewController.swift */,
-				91EE4D4E2008E725000F9DF9 /* UserAccountViewController.swift */,
+				9180817A200F235D009504D3 /* MyProfileViewController.swift */,
+				9180817B200F235D009504D3 /* MyProfileViewController.xib */,
 			);
 			path = CHD;
 			sourceTree = "<group>";
@@ -393,6 +396,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				9180817D200F235D009504D3 /* MyProfileViewController.xib in Resources */,
 				911C58721FEA6CEF00D2CB57 /* PostTableViewCell.xib in Resources */,
 				911C58791FEA6D2B00D2CB57 /* Main.storyboard in Resources */,
 				911C58781FEA6D2B00D2CB57 /* LaunchScreen.storyboard in Resources */,
@@ -490,7 +494,6 @@
 				91521F5E2007980C0096B4D5 /* LoginViewController.swift in Sources */,
 				918A0B24200DCE9A0019D72A /* FavouriteViewController.swift in Sources */,
 				911C58691FEA6CC000D2CB57 /* HTTPAPICalling.swift in Sources */,
-				91EE4D4F2008E725000F9DF9 /* UserAccountViewController.swift in Sources */,
 				91B6E1941FED062B00A9A532 /* ReachabilityManager.swift in Sources */,
 				911C588D1FEA6D7000D2CB57 /* LeftViewController.swift in Sources */,
 				911C58911FEA6D7000D2CB57 /* SecondViewController.swift in Sources */,
@@ -499,6 +502,7 @@
 				911C58981FEA6D7F00D2CB57 /* AppDelegate.swift in Sources */,
 				9106C2C7200CB8EC0049A950 /* AlertViewController.swift in Sources */,
 				9106C2C5200CB3630049A950 /* ForgotPasswordViewController.swift in Sources */,
+				9180817C200F235D009504D3 /* MyProfileViewController.swift in Sources */,
 				911C58731FEA6CEF00D2CB57 /* PostTableViewCell.swift in Sources */,
 				91521F5A20076E8C0096B4D5 /* IntroPagesCollectionViewCell.swift in Sources */,
 				911C58921FEA6D7000D2CB57 /* ReviewTableViewController.swift in Sources */,

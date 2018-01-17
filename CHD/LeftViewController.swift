@@ -12,7 +12,7 @@ import UIKit
 class LeftViewController: UIViewController {
     var tableView: UITableView!
     var items = ["Home", "Health Center", "Beauty & Skin Care", "Fitness", "Health Conditions", "Health News", "Reviews"]
-    var anotherItems = ["My Account" ,"Advertise with Us", "Contact Us", "Terms of Use", "About Us", "Share This App"]
+    var anotherItems = ["Sign In" ,"Advertise with Us", "Contact Us", "Terms of Use", "About Us", "Share This App"]
     var didselected: ((IndexPath, Int, Int) -> ())?
 
     var socialMediaView: UIStackView!
@@ -20,6 +20,11 @@ class LeftViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = .white
+
+        if APIManager.sharedInstance.isKeyPresentInUserDefaults(key: "userID") {
+            anotherItems = ["My Profile" ,"Advertise with Us", "Contact Us", "Terms of Use", "About Us", "Share This App"]
+        }
+
         tableView = UITableView()
         tableView.delegate = self
         tableView.dataSource = self
@@ -46,7 +51,8 @@ class LeftViewController: UIViewController {
         logoView.contentMode = .scaleAspectFill
         logoView.frame = headerView.frame
         headerView.addSubview(logoView)
-        
+
+
         
         let nameLabel = UILabel.init(frame: CGRect.init(x: 10, y: Int(headerView.frame.height - 40), width: Int(headerView.frame.size.width-20), height: 30))
         nameLabel.text = "Consumer Health Digest"

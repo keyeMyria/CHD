@@ -138,12 +138,16 @@ class FirstViewController: UITableViewController {
                     case 1:
                         switch indexPath.row{
                         case 0:
-                            print("My Account")
-                            let aboutUs = UserAccountViewController()
-//                            aboutUs.pageTitle = "Advertise with Us"
-//                            aboutUs.pageURL = ADVERTISE_WITH_US_URL
-//                            aboutUs.hidesBottomBarWhenPushed = true
-                            strongSelf.navigationController?.pushViewController(aboutUs, animated: true)
+                            print("My profile")
+                           // if APIManager.sharedInstance.isKeyPresentInUserDefaults(key: "userID") {
+                                let vc = MyProfileViewController()
+                                vc.hidesBottomBarWhenPushed = true
+                                strongSelf.navigationController?.pushViewController(vc, animated: true)
+//                            } else {
+//                                let vc = LoginViewController()
+//                                vc.hidesBottomBarWhenPushed = true
+//                                strongSelf.navigationController?.pushViewController(vc, animated: true)
+//                            }
                             break
                         case 1:
                             print("Advertise with Us")
