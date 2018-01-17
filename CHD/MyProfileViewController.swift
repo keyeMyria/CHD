@@ -17,6 +17,7 @@ class MyProfileViewController: UIViewController {
 
     @IBOutlet weak var streetTextfield: UITextField!
     @IBOutlet weak var cityTextfield: UITextField!
+    @IBOutlet weak var stateTextField: UITextField!
     @IBOutlet weak var countryTextfield: UITextField!
     @IBOutlet weak var zipTextfield: UITextField!
 
@@ -49,9 +50,14 @@ class MyProfileViewController: UIViewController {
 
     @objc func popViewController() {
         self.navigationController?.popViewController(animated: true)
-        //sendUserData(requestURL: ACCOUNT_SETTING_URL) { (dict) in
-        //    print(dict)
-        //}
+
+    }
+    @IBAction func submitButtonDidClicked(_ sender: UIButton) {
+        sendUserData(requestURL: ACCOUNT_SETTING_URL) { [weak self] (dict) in
+            if let _ = self {
+                print(dict["errorCode"] as! String)
+            }
+        }
     }
 
     override var prefersStatusBarHidden : Bool {
@@ -59,10 +65,13 @@ class MyProfileViewController: UIViewController {
     }
 
     func sendUserData(requestURL: String, completion: @escaping(NSDictionary) -> ()) {
-        let requestDict = ["user_id":"",
-                           "platform":"0",
-                           "user_id":"",
-                           "reference":"pushnotification"]
+        var userID: String = ""
+        if let userId: String = UserDefaults.standard.string(forKey: "userID") {
+            userID = userId
+        }
+        let sex = gender.titleForSegment(at: gender.selectedSegmentIndex)
+        let requestDict = ["user_id":userID,"first_name":firstName.text!,"last_name":lastName.text!,"gender":sex! ,"dob":"1988/12/04","street":streetTextfield.text!,"city":cityTextfield.text!,"state": stateTextField.text!,"country":countryTextfield.text!,"zip":zipTextfield.text!,"time_zone":"ASIA/COLOMBO"]
+        
         HTTPAPICalling.sharedInstance.fetchAPIByRegularConvention(requestMethod: POST, requestURL: requestURL, requestParaDic: requestDict , completion: { (dict) in
             completion(dict!)
         })

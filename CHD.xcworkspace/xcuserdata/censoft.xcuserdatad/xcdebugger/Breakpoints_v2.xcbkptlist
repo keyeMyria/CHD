@@ -10,11 +10,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "CHD/FirstViewController.swift"
-            timestampString = "537872614.617578"
+            timestampString = "537881308.926281"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "353"
-            endingLineNumber = "353"
+            startingLineNumber = "359"
+            endingLineNumber = "359"
             landmarkName = "registerDeviceForPushNotification()"
             landmarkType = "7">
          </BreakpointContent>
@@ -26,7 +26,7 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "CHD/FavouriteViewController.swift"
-            timestampString = "537803955.188539"
+            timestampString = "537881308.926425"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "79"
@@ -42,7 +42,7 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "CHD/FavouriteViewController.swift"
-            timestampString = "537803955.189063"
+            timestampString = "537881308.926538"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "83"
@@ -57,13 +57,13 @@
                   symbolName = "closure #1 (CHD.Result) -&gt; () in CHD.FavouriteViewController.doneButtonDidClicked() -&gt; ()"
                   moduleName = "CHD"
                   usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/censoft/Desktop/CHD/CHD/FavouriteViewController.swift"
-                  timestampString = "537862630.333038"
+                  urlString = "file:///Users/censoft/Desktop/clone/CHD/CHD/FavouriteViewController.swift"
+                  timestampString = "537881309.308732"
                   startingColumnNumber = "9223372036854775807"
                   endingColumnNumber = "9223372036854775807"
                   startingLineNumber = "83"
                   endingLineNumber = "83"
-                  offsetFromSymbolStart = "784">
+                  offsetFromSymbolStart = "828">
                </Location>
                <Location
                   shouldBeEnabled = "Yes"
@@ -72,8 +72,8 @@
                   symbolName = "implicit closure #1 : @autoclosure () throws -&gt; Swift.String in closure #1 (CHD.Result) -&gt; () in CHD.FavouriteViewController.doneButtonDidClicked() -&gt; ()"
                   moduleName = "CHD"
                   usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/censoft/Desktop/CHD/CHD/FavouriteViewController.swift"
-                  timestampString = "537862630.335279"
+                  urlString = "file:///Users/censoft/Desktop/clone/CHD/CHD/FavouriteViewController.swift"
+                  timestampString = "537881309.312034"
                   startingColumnNumber = "9223372036854775807"
                   endingColumnNumber = "9223372036854775807"
                   startingLineNumber = "83"
@@ -81,6 +81,54 @@
                   offsetFromSymbolStart = "12">
                </Location>
             </Locations>
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "CHD/MyProfileViewController.swift"
+            timestampString = "537881308.926632"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "73"
+            endingLineNumber = "73"
+            landmarkName = "sendUserData(requestURL:completion:)"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "CHD/LoginViewController.swift"
+            timestampString = "537881308.926721"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "325"
+            endingLineNumber = "325"
+            landmarkName = "loginButtonDidClicked(_:)"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "CHD/LoginViewController.swift"
+            timestampString = "537881308.926807"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "308"
+            endingLineNumber = "308"
+            landmarkName = "loginButtonDidClicked(_:)"
+            landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
    </Breakpoints>
