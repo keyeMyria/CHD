@@ -73,6 +73,7 @@ class MyProfileViewController: UIViewController {
     @IBAction func submitButtonDidClicked(_ sender: UIButton) {
         loadingIndicator.center = view.center
         loadingIndicator.alpha = 0.9
+        self.view.addSubview(loadingIndicator)
         sendUserData(requestURL: ACCOUNT_SETTING_URL) { [weak self] (dict) in
             if let strongSelf = self {
                 print(dict["errorCode"] as! String)

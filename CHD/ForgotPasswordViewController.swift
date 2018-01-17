@@ -108,7 +108,4 @@ class ForgotPasswordViewController: BaseViewController {
         }
         
     }
-
-
-
 }
