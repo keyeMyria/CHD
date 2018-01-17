@@ -137,12 +137,16 @@ class SecondViewController: UITableViewController {
                     case 1:
                         switch indexPath.row{
                         case 0:
-                            print("My Account")
-                            let aboutUs = MyProfileViewController()
-                            //                            aboutUs.pageTitle = "Advertise with Us"
-                            //                            aboutUs.pageURL = ADVERTISE_WITH_US_URL
-                            //                            aboutUs.hidesBottomBarWhenPushed = true
-                            strongSelf.navigationController?.pushViewController(aboutUs, animated: true)
+                            print("My profile")
+                            if APIManager.sharedInstance.isKeyPresentInUserDefaults(key: "userID") {
+                                let vc = MyProfileViewController()
+                                vc.hidesBottomBarWhenPushed = true
+                                strongSelf.navigationController?.pushViewController(vc, animated: true)
+                            } else {
+                                let vc = LoginViewController()
+                                vc.hidesBottomBarWhenPushed = true
+                                strongSelf.navigationController?.pushViewController(vc, animated: true)
+                            }
                             break
                         case 1:
                             print("Advertise with Us")
@@ -337,6 +341,13 @@ class SecondViewController: UITableViewController {
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
+        
+        self.navigationController?.navigationBar.isHidden = false
+        self.navigationController?.navigationBar.backIndicatorImage = nil
+        self.navigationController?.navigationBar.isTranslucent = false
+        navigationController?.view.backgroundColor = UIColor.white
+        self.navigationController?.navigationBar.shadowImage = nil
+
         let imageView = UIImageView(image:#imageLiteral(resourceName: "logo"))
         imageView.layer.cornerRadius = 15
         imageView.clipsToBounds = true

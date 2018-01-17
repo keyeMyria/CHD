@@ -10,7 +10,7 @@ import UIKit
 
 struct Result: Decodable {
     var errorCode: String?
-    
+    var user_id: Int?
     var result: UserCredintial?
 }
 
@@ -316,6 +316,32 @@ class LoginViewController: BaseViewController {
                         strongSelf.navigationController?.pushViewController(homeViewCtrl, animated: true)
                     }
                     
+                } else if result.errorCode == "2" {
+                strongSelf.loginWebService(requestParaDict: requestDict, requestMethod: POST, requestURL: REGISTER_NEW_USER_URL, completion: { [weak self] (result) in
+                    if result.errorCode == "1" {
+                        let stringUserID: String?
+                        stringUserID = String(describing: result.user_id!)
+                        if let strongerSelf = self {
+                            if let userID = stringUserID {
+                                UserDefaults.standard.set(userID, forKey: "userID")
+                            }
+                            UserDefaults.standard.set(true, forKey: "isLoggedInSkipped")
+                            let homeViewCtrl = FavouriteViewController()
+                            DispatchQueue.main.async {
+                                //strongSelf.appDelegate.setupTabBarController()
+                                strongerSelf.loadingIndicator.alpha = 0
+                                strongerSelf.navigationController?.pushViewController(homeViewCtrl, animated: true)
+                            }
+                        }
+
+                    } else {
+                        DispatchQueue.main.async {
+                            strongSelf.loadingIndicator.alpha = 0
+                            strongSelf.displayAlertView("Login Failed", message: "Incorrect username or password.", handler: nil)
+                        }
+                    }
+                })
+
                 } else {
                     DispatchQueue.main.async {
                         strongSelf.loadingIndicator.alpha = 0

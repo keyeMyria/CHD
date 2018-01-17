@@ -15,6 +15,7 @@ let ADVERTISE_WITH_US_URL = "http://uat.mobodesk.com/chd-api/contact-form-api/?p
 let CONTACT_US_URL = "http://uat.mobodesk.com/chd-api/contact-form-api/?page=contactus"
 
 let LOGIN_URL = "http://uat.mobodesk.com/chd-api/api/?page=user_login"
+let REGISTER_NEW_USER_URL = "http://uat.mobodesk.com/chd-api/api/?page=user_register"
 let FORGOT_PASSWORD_URL = "http://uat.mobodesk.com/chd-api/api/?page=forgot_password"
 let ADD_TO_FAVOURITE_URL = "http://uat.mobodesk.com/chd-api/api/?page=profile_favourite&add_fav=yes"
 let REGISTER_DEVICE_URL = "http://uat.mobodesk.com/chd-api/api/?page=device_token"

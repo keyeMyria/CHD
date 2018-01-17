@@ -139,15 +139,15 @@ class FirstViewController: UITableViewController {
                         switch indexPath.row{
                         case 0:
                             print("My profile")
-                           // if APIManager.sharedInstance.isKeyPresentInUserDefaults(key: "userID") {
+                            if APIManager.sharedInstance.isKeyPresentInUserDefaults(key: "userID") {
                                 let vc = MyProfileViewController()
                                 vc.hidesBottomBarWhenPushed = true
                                 strongSelf.navigationController?.pushViewController(vc, animated: true)
-//                            } else {
-//                                let vc = LoginViewController()
-//                                vc.hidesBottomBarWhenPushed = true
-//                                strongSelf.navigationController?.pushViewController(vc, animated: true)
-//                            }
+                            } else {
+                                let vc = LoginViewController()
+                                vc.hidesBottomBarWhenPushed = true
+                                strongSelf.navigationController?.pushViewController(vc, animated: true)
+                            }
                             break
                         case 1:
                             print("Advertise with Us")
@@ -325,6 +325,12 @@ class FirstViewController: UITableViewController {
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
+
+        self.navigationController?.navigationBar.backIndicatorImage = nil
+        self.navigationController?.navigationBar.isTranslucent = false
+        navigationController?.view.backgroundColor = UIColor.white
+        self.navigationController?.navigationBar.shadowImage = nil
+        
         self.navigationController?.navigationBar.isHidden = false
         self.navigationItem.setHidesBackButton(true, animated:true);
         if #available (iOS 11.0, *){
