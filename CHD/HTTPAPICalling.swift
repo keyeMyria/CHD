@@ -46,7 +46,7 @@ class HTTPAPICalling{
         return Singleton.instance
     }
     
-    func makeRequestForAPI(requestMethod:String, requestURL:String, requestParaDic:[String: String]?, completion: @escaping (JSONResult?) -> ()) {
+    func makeRequestForAPI(requestMethod:String, requestURL:String, requestParaDic:[String: Any]?, completion: @escaping (JSONResult?) -> ()) {
         let url = URL(string: requestURL)
         var request = URLRequest(url: url!)
         request.httpMethod = requestMethod

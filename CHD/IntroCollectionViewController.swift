@@ -80,9 +80,7 @@ class IntroCollectionViewController: UICollectionViewController, UICollectionVie
 
     override func viewWillAppear(_ animated: Bool) {
         if #available(iOS 11.0, *) {
-            self.navigationController?.navigationBar.prefersLargeTitles = true
-        } else {
-            // Fallback on earlier versions
+            self.navigationController?.navigationBar.prefersLargeTitles = false
         }
         self.navigationController?.navigationBar.isHidden = true
     }

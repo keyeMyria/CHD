@@ -14,6 +14,7 @@
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="MyProfileViewController" customModule="CHD" customModuleProvider="target">
             <connections>
+                <outlet property="chooseImageButton" destination="VWY-Xe-69t" id="4Za-QY-Zlx"/>
                 <outlet property="cityTextfield" destination="Jft-G2-3fc" id="Ppt-bV-sAz"/>
                 <outlet property="countryTextfield" destination="MxO-uh-pL4" id="2U4-zO-UJI"/>
                 <outlet property="firstName" destination="fFN-UX-1nt" id="dqw-NB-zWh"/>
@@ -129,6 +130,19 @@
                         <action selector="submitButtonDidClicked:" destination="-1" eventType="touchUpInside" id="EL5-wd-cfm"/>
                     </connections>
                 </button>
+                <button opaque="NO" contentMode="scaleAspectFit" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="VWY-Xe-69t">
+                    <rect key="frame" x="336" y="234" width="30" height="30"/>
+                    <color key="backgroundColor" red="0.92143100499999997" green="0.92145264149999995" blue="0.92144101860000005" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                    <constraints>
+                        <constraint firstAttribute="width" constant="30" id="5xk-Jw-Hpp"/>
+                        <constraint firstAttribute="height" constant="30" id="teL-nT-3xW"/>
+                    </constraints>
+                    <color key="tintColor" red="0.0" green="0.58980089430000004" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                    <state key="normal" title="Button" image="icons8-camera-100"/>
+                    <connections>
+                        <action selector="chooseImageButtonClicked:" destination="-1" eventType="touchUpInside" id="KaS-B9-4FD"/>
+                    </connections>
+                </button>
             </subviews>
             <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
             <constraints>
@@ -160,7 +174,9 @@
                 <constraint firstItem="pRt-vp-Uh5" firstAttribute="leading" secondItem="Dbp-bA-Bip" secondAttribute="leading" id="lHe-uI-K5k"/>
                 <constraint firstItem="Jft-G2-3fc" firstAttribute="leading" secondItem="MxO-uh-pL4" secondAttribute="leading" id="lce-2Z-DJO"/>
                 <constraint firstItem="cMs-uq-bPj" firstAttribute="trailing" secondItem="OAl-Gg-iwn" secondAttribute="trailing" id="mTd-Y8-zIg"/>
+                <constraint firstItem="fnl-2z-Ty3" firstAttribute="trailing" secondItem="VWY-Xe-69t" secondAttribute="trailing" constant="9" id="n0S-ro-BNi"/>
                 <constraint firstItem="0nr-Ca-27J" firstAttribute="top" secondItem="fnl-2z-Ty3" secondAttribute="top" id="ndg-wu-8lU"/>
+                <constraint firstItem="cMs-uq-bPj" firstAttribute="top" secondItem="VWY-Xe-69t" secondAttribute="bottom" constant="16" id="pDu-8E-d1X"/>
                 <constraint firstItem="0nr-Ca-27J" firstAttribute="centerX" secondItem="b8P-aE-H2O" secondAttribute="centerX" id="pKd-qg-grB"/>
                 <constraint firstItem="Qsy-Tj-WTU" firstAttribute="centerY" secondItem="OAl-Gg-iwn" secondAttribute="centerY" id="qvn-0r-Rtr"/>
                 <constraint firstItem="Fea-4w-C5N" firstAttribute="leading" secondItem="fnl-2z-Ty3" secondAttribute="leading" constant="113" id="uD5-k8-Syr"/>
@@ -176,5 +192,6 @@
     </objects>
     <resources>
         <image name="drawerImage" width="406" height="182"/>
+        <image name="icons8-camera-100" width="100" height="100"/>
     </resources>
 </document>

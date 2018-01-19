@@ -10,11 +10,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "CHD/FirstViewController.swift"
-            timestampString = "537881308.926281"
+            timestampString = "538058691.863202"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "359"
-            endingLineNumber = "359"
+            startingLineNumber = "360"
+            endingLineNumber = "360"
             landmarkName = "registerDeviceForPushNotification()"
             landmarkType = "7">
          </BreakpointContent>
@@ -25,62 +25,14 @@
             shouldBeEnabled = "Yes"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
-            filePath = "CHD/FavouriteViewController.swift"
-            timestampString = "537881308.926425"
+            filePath = "CHD/LoginViewController.swift"
+            timestampString = "538058691.863314"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "79"
-            endingLineNumber = "79"
-            landmarkName = "doneButtonDidClicked()"
-            landmarkType = "7">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            shouldBeEnabled = "Yes"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "CHD/FavouriteViewController.swift"
-            timestampString = "537881308.926538"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "83"
-            endingLineNumber = "83"
-            landmarkName = "doneButtonDidClicked()"
-            landmarkType = "7">
-            <Locations>
-               <Location
-                  shouldBeEnabled = "Yes"
-                  ignoreCount = "0"
-                  continueAfterRunningActions = "No"
-                  symbolName = "closure #1 (CHD.Result) -&gt; () in CHD.FavouriteViewController.doneButtonDidClicked() -&gt; ()"
-                  moduleName = "CHD"
-                  usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/censoft/Desktop/clone/CHD/CHD/FavouriteViewController.swift"
-                  timestampString = "537881309.308732"
-                  startingColumnNumber = "9223372036854775807"
-                  endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "83"
-                  endingLineNumber = "83"
-                  offsetFromSymbolStart = "828">
-               </Location>
-               <Location
-                  shouldBeEnabled = "Yes"
-                  ignoreCount = "0"
-                  continueAfterRunningActions = "No"
-                  symbolName = "implicit closure #1 : @autoclosure () throws -&gt; Swift.String in closure #1 (CHD.Result) -&gt; () in CHD.FavouriteViewController.doneButtonDidClicked() -&gt; ()"
-                  moduleName = "CHD"
-                  usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/censoft/Desktop/clone/CHD/CHD/FavouriteViewController.swift"
-                  timestampString = "537881309.312034"
-                  startingColumnNumber = "9223372036854775807"
-                  endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "83"
-                  endingLineNumber = "83"
-                  offsetFromSymbolStart = "12">
-               </Location>
-            </Locations>
+            startingLineNumber = "387"
+            endingLineNumber = "387"
+            landmarkName = "LoginViewController"
+            landmarkType = "3">
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
@@ -90,28 +42,12 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "CHD/LoginViewController.swift"
-            timestampString = "537881308.926721"
+            timestampString = "538058691.863454"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "325"
-            endingLineNumber = "325"
-            landmarkName = "loginButtonDidClicked(_:)"
-            landmarkType = "7">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            shouldBeEnabled = "Yes"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "CHD/LoginViewController.swift"
-            timestampString = "537881308.926807"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "308"
-            endingLineNumber = "308"
-            landmarkName = "loginButtonDidClicked(_:)"
+            startingLineNumber = "370"
+            endingLineNumber = "370"
+            landmarkName = "viewWillAppear(_:)"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>

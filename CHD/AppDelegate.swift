@@ -17,12 +17,24 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
         // Override point for customization after application launch.
         self.window = UIWindow(frame: UIScreen.main.bounds)
-        
+
+        // remove comments after all testing is done
         if !UserDefaults.standard.bool(forKey: "isLoggedInSkipped") {
-            setupLoginNavigationController(application)
+            setupLoginNavigationController()
+            let settings = UIUserNotificationSettings(types: [.alert, .badge, .sound], categories: nil)
+            application.registerUserNotificationSettings(settings)
+            application.registerForRemoteNotifications()
         } else {
             setupTabBarController()
         }
+
+//        let third = LoginViewController(nibName: nil, bundle: nil)
+//        let nav3 = UINavigationController()
+//        nav3.viewControllers = [third]
+//
+//        self.window!.rootViewController = nav3;
+//        self.window?.makeKeyAndVisible();
+
         ReachabilityManager.shared.startMonitoring()
         
         //Google Analytics
@@ -49,22 +61,14 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         return true
     }
     
-    func setupLoginNavigationController(_ application: UIApplication) {
-        
-        let settings = UIUserNotificationSettings(types: [.alert, .badge, .sound], categories: nil)
-        application.registerUserNotificationSettings(settings)
-        application.registerForRemoteNotifications()
-        
-        
+    func setupLoginNavigationController() {
+
         let navCtrl = UINavigationController()
         let layout = UICollectionViewFlowLayout()
         layout.scrollDirection = .horizontal
-        let introScreen = IntroCollectionViewController(collectionViewLayout: layout)
+        let introScreen = LoginViewController()//(collectionViewLayout: layout)
         navCtrl.viewControllers = [introScreen]
-        
-    
 
-        
         self.window?.rootViewController = navCtrl
         self.window?.makeKeyAndVisible()
         

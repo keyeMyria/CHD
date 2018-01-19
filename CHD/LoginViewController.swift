@@ -26,7 +26,7 @@ struct UserCredintial: Decodable {
 
 class CustomTextField: UITextField {
     
-    let padding = UIEdgeInsets(top: 0, left: 5, bottom: 0, right: 5);
+    let padding = UIEdgeInsets(top: 0, left: 25, bottom: 0, right: 5);
     
     override func textRect(forBounds bounds: CGRect) -> CGRect {
         return UIEdgeInsetsInsetRect(bounds, padding)
@@ -42,6 +42,8 @@ class CustomTextField: UITextField {
 }
 
 class LoginViewController: BaseViewController {
+
+    var keyboardIsShown = false
     
     class var sharedInstance :LoginViewController {
         struct Singleton {
@@ -53,7 +55,7 @@ class LoginViewController: BaseViewController {
     
     private lazy var blurView: UIView = {
         let view = UIView()
-        view.backgroundColor = UIColor(white: 1, alpha: 0.8)
+        view.backgroundColor = UIColor(white: 1, alpha: 1)
         return view
     }()
     
@@ -77,48 +79,31 @@ class LoginViewController: BaseViewController {
     
     private lazy var logoView: UIImageView = {
         let imageView = UIImageView()
-        imageView.image = #imageLiteral(resourceName: "logo")
-        imageView.contentMode = .scaleAspectFit
-        imageView.layer.cornerRadius = 15
-        imageView.clipsToBounds = true
+        imageView.image = #imageLiteral(resourceName: "collage")
+        imageView.contentMode = .scaleToFill
         return imageView
     }()
-    
-    private lazy var mainTitle: UILabel = {
-        let label = UILabel()
-        label.text = "ConsumerHealthDigest"
-        label.textColor = #colorLiteral(red: 0.1764705926, green: 0.4980392158, blue: 0.7568627596, alpha: 1)
-        let string_to_color = "Health"
-        let blueColor = #colorLiteral(red: 0.4666666687, green: 0.7647058964, blue: 0.2666666806, alpha: 1)
-        let range = (label.text as! NSString).range(of: string_to_color)
-        
-        let attribute = NSMutableAttributedString.init(string: label.text!)
-        attribute.addAttribute(NSAttributedStringKey.foregroundColor, value: blueColor , range: range)
-        label.attributedText = attribute
-        label.textAlignment = .center
-        label.font = UIFont.systemFont(ofSize: 25, weight: .semibold)
-        return label
+
+    private lazy var titleView: UIImageView = {
+        let imageView = UIImageView()
+        imageView.image = #imageLiteral(resourceName: "welcome")
+        imageView.contentMode = .scaleAspectFit
+        return imageView
     }()
-    
-    private lazy var subTitle: UILabel = {
-        let label = UILabel()
-        label.text = "Your trusted Source for Good health"
-        label.textAlignment = .center
-        label.font = UIFont.systemFont(ofSize: 12)
-        label.textColor = .gray
-        return label
-    }()
-    
+
     private lazy var emailTextField: CustomTextField = {
         let textField = CustomTextField()
         textField.placeholder = "E-mail"
+        let imageView = UIImageView(image: #imageLiteral(resourceName: "username"))
+        imageView.frame = CGRect(x: 0, y: 0, width: 20, height: 20)
+        imageView.contentMode = .scaleAspectFit
+        textField.leftViewMode = .always
+        textField.leftView = imageView
         textField.font = UIFont.systemFont(ofSize: 13)
         textField.backgroundColor = .white
-        textField.layer.cornerRadius = 6
         textField.keyboardType = .emailAddress
         textField.autocapitalizationType = .none
         textField.returnKeyType = .next
-        textField.layer.borderWidth = 0.4
         textField.autocorrectionType = .no
         return textField
     }()
@@ -126,66 +111,73 @@ class LoginViewController: BaseViewController {
     private lazy var passwordTextField: CustomTextField = {
         let textField = CustomTextField()
         textField.placeholder = "Login Password or Create a Password"
+        let imageView = UIImageView(image: #imageLiteral(resourceName: "password"))
+        imageView.frame = CGRect(x: 0, y: 0, width: 20, height: 20)
+        imageView.contentMode = .scaleAspectFit
+        textField.leftViewMode = .always
+        textField.leftView = imageView
         textField.font = UIFont.systemFont(ofSize: 13)
         textField.backgroundColor = .white
-        textField.layer.cornerRadius = 6
         textField.autocorrectionType = .no
-        textField.layer.borderWidth = 0.4
         textField.isSecureTextEntry = true
         return textField
     }()
     
     private lazy var loginButton: UIButton = {
         let button = UIButton()
-        button.setTitle("Continue", for: .normal)
+        button.setImage(#imageLiteral(resourceName: "sign-in"), for: .normal)
         button.setTitleColor(.white, for: .normal)
-        button.backgroundColor = #colorLiteral(red: 0.4666666687, green: 0.7647058964, blue: 0.2666666806, alpha: 1)
-        button.layer.cornerRadius = 6
+        button.imageView?.contentMode = .scaleAspectFill
+        button.isEnabled = false
         return button
     }()
     
     private lazy var forgotPasswordButton: UIButton = {
         let button = UIButton()
-        button.setTitle("Forgot your password?", for: .normal)
-        button.setTitleColor(.black, for: .normal)
-        button.titleLabel?.font = UIFont.systemFont(ofSize: 13)
-        button.titleLabel?.textAlignment = .left
+        button.setImage(#imageLiteral(resourceName: "forgot-pass"), for: .normal)
+        button.imageView?.contentMode = .scaleAspectFill
         return button
     }()
     
-    private lazy var dividerView: UIView = {
+    private lazy var socialMedia: UIView = {
         let view = UIView()
         return view
     }()
     
-    private lazy var dividerLine1: UILabel = {
-        let firstView = UILabel()
-        firstView.backgroundColor = .gray
-        firstView.frame.size.height = 2
+    private lazy var facebook: UIImageView = {
+        let firstView = UIImageView()
+        firstView.image = #imageLiteral(resourceName: "fb-logo")
         return firstView
     }()
     
-    private lazy var dividerLine2: UILabel = {
-        let firstView = UILabel()
-        firstView.backgroundColor = .gray
-        firstView.frame.size.height = 2
+    private lazy var google: UIImageView = {
+        let firstView = UIImageView()
+        firstView.image = #imageLiteral(resourceName: "g+-logo")
+        firstView.contentMode = .scaleAspectFill
         return firstView
     }()
-    
-    private lazy var ORLabel: UILabel = {
+
+    private lazy var continueWithLabel: UILabel = {
+        let label = UILabel()
+        label.text = "Continue with"
+        label.textAlignment = .center
+        label.font = UIFont.systemFont(ofSize: 13)
+        label.textColor = .gray
+        return label
+    }()
+
+    private lazy var underline1: UILabel = {
         let secondView = UILabel()
-        secondView.text = "OR"
-        secondView.textColor = .gray
+        secondView.backgroundColor = .lightGray
         return secondView
     }()
-    
-    private lazy var backgroundImage: UIImageView = {
-        let imageView = UIImageView()
-        imageView.image = #imageLiteral(resourceName: "login")
-        imageView.contentMode = .scaleAspectFill
-        return imageView
+
+    private lazy var underline2: UILabel = {
+        let secondView = UILabel()
+        secondView.backgroundColor = .lightGray
+        return secondView
     }()
-    
+
     private lazy var loadingIndicator: UIView = {
         let view = UIView()
         view.frame.size = CGSize(width: 210, height: 100)
@@ -215,6 +207,7 @@ class LoginViewController: BaseViewController {
         addLoginButton()
         addForgotPasswordButton()
         addConstraintsToSkipButton()
+        addingObserverOnView()
         //addDivider()
     }
     
@@ -224,79 +217,88 @@ class LoginViewController: BaseViewController {
     
     fileprivate func setupTopView() {
         self.blurView.addSubview(containerView)
-        containerView.frame = CGRect(x: 0, y: (view.frame.height / 2) - 250, width: view.frame.width, height: 500)
+        containerView.frame = CGRect(x: 0, y: 0, width: view.frame.width, height: view.frame.height)
         
         self.containerView.addSubview(topLogoView)
-        topLogoView.frame = CGRect(x: (containerView.frame.width / 2) - 150, y: 10, width: 300, height: 150)
+        topLogoView.frame = CGRect(x: 0, y: 0, width: view.frame.width, height: self.view.frame.height / 2 + 200)
 
         topLogoView.addSubview(logoView)
-        logoView.frame = CGRect(x: (topLogoView.frame.width / 2) - 15, y: 10, width: 30, height: 30)
-        
-        topLogoView.addSubview(mainTitle)
-        mainTitle.frame = CGRect(x: (topLogoView.frame.width / 2) - 150, y: logoView.frame.height + 20, width: 300, height: 30)
-        
-        topLogoView.addSubview(subTitle)
-        subTitle.frame = CGRect(x: (topLogoView.frame.width / 2) - 150, y: logoView.frame.height + mainTitle.frame.height + 20, width: 300, height: 20)
+        logoView.frame = CGRect(x: 0, y: 0, width: topLogoView.frame.width, height: topLogoView.frame.height / 2)
+
+        topLogoView.addSubview(titleView)
+        let width = topLogoView.frame.width
+        titleView.frame = CGRect(x: 30, y: logoView.frame.height , width: width - 60, height: 100)
+
+        containerView.addSubview(socialMedia)
+        socialMedia.frame = CGRect(x: 0, y: topLogoView.frame.height, width: view.frame.width, height: view.frame.height - topLogoView.frame.height)
+
+        socialMedia.addSubview(continueWithLabel)
+        continueWithLabel.frame = CGRect(x: socialMedia.frame.width / 2 - 115, y: 20, width: 90, height: 10)
+        socialMedia.addSubview(facebook)
+        facebook.frame = CGRect(x: continueWithLabel.frame.origin.x + 90, y: 0, width: 50, height: 50)
+        socialMedia.addSubview(google)
+        google.frame = CGRect(x: facebook.frame.origin.x + 60, y: 0, width: 50, height: 50)
+
     }
     
     func addConstraintsToSkipButton() {
-        self.view.addSubview(skipButton)
+        self.socialMedia.addSubview(skipButton)
         skipButton.addTarget(self, action: #selector(skipLogin), for: .touchUpInside)
         if #available(iOS 11.0, *) {
-            skipButton.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor).isActive = true
+            skipButton.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -10).isActive = true
             skipButton.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: -10).isActive = true
         } else {
             // Fallback on earlier versions
-            skipButton.topAnchor.constraint(equalTo: view.topAnchor).isActive = true
+            skipButton.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: -10).isActive = true
             skipButton.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -10).isActive = true
         }
     }
     
     fileprivate func addBackgroundImage() {
-        self.view.addSubview(backgroundImage)
         self.view.addSubview(blurView)
         blurView.frame = self.view.frame
-        backgroundImage.frame = self.view.frame
     }
     
     fileprivate func addEmailTextField() {
         emailTextField.delegate = self
-        self.containerView.addSubview(emailTextField)
-        emailTextField.frame = CGRect(x: 10, y: topLogoView.frame.height + 20, width: view.frame.width - 20, height: 30)
+        let width = topLogoView.frame.width
+        self.topLogoView.addSubview(emailTextField)
+        emailTextField.frame = CGRect(x: 30, y: logoView.frame.height + titleView.frame.height , width: width - 60 , height: 30)
+        self.topLogoView.addSubview(underline1)
+        underline1.frame = CGRect(x: 30, y: emailTextField.frame.origin.y + emailTextField.frame.height, width: width - 60, height: 1)
     }
     
     fileprivate func addPasswordTextField() {
         passwordTextField.delegate = self
-        self.containerView.addSubview(passwordTextField)
-        passwordTextField.frame = CGRect(x: 10, y: topLogoView.frame.height + emailTextField.frame.height + 30, width: view.frame.width - 20, height: 30)
+        let width = topLogoView.frame.width
+        self.topLogoView.addSubview(passwordTextField)
+        passwordTextField.frame = CGRect(x: 30, y: logoView.frame.height + titleView.frame.height + emailTextField.frame.height + 10, width:  width - 60 , height: 30)
+        self.topLogoView.addSubview(underline2)
+        underline2.frame = CGRect(x: 30, y: passwordTextField.frame.origin.y + passwordTextField.frame.height, width: width - 60, height: 1)
     }
-    
-    fileprivate func addLoginButton() {
-        self.containerView.addSubview(loginButton)
-        loginButton.frame = CGRect(x: 10, y: topLogoView.frame.height + emailTextField.frame.height + passwordTextField.frame.height + 40, width: view.frame.width - 20, height: 30)
-        loginButton.addTarget(self, action: #selector(loginButtonDidClicked), for: .touchUpInside)
-    }
-    
+
     fileprivate func addForgotPasswordButton() {
-        forgotPasswordButton.frame = CGRect(x: 10, y: topLogoView.frame.height + emailTextField.frame.height + passwordTextField.frame.height + loginButton.frame.height + 50, width: 150, height: 20)
-        self.containerView.addSubview(forgotPasswordButton)
+        forgotPasswordButton.frame = CGRect(x: 25, y: logoView.frame.height + titleView.frame.height + emailTextField.frame.height + passwordTextField.frame.height + 15, width: 150, height: 20)
+
+        self.topLogoView.addSubview(forgotPasswordButton)
         forgotPasswordButton.addTarget(self, action: #selector(forgotPasswordButtonDidClicked), for: .touchUpInside)
     }
     
-    fileprivate func addDivider() {
-        self.view.addSubview(dividerView)
-        
-        dividerView.frame = CGRect(x: 10, y: topLogoView.frame.origin.y + emailTextField.frame.height + passwordTextField.frame.height + loginButton.frame.height + forgotPasswordButton.frame.height + 60, width: 150, height: 20)
-        dividerView.addSubview(dividerLine1)
-        dividerLine1.frame = CGRect(x: 10, y: 5, width: 150, height: 2)
-        dividerView.addSubview(ORLabel)
-        ORLabel.frame = CGRect(x: 170, y: 5, width: 50, height: 20)
-        dividerView.addSubview(dividerLine2)
-        dividerLine2.frame = CGRect(x: 230, y: 5, width: 150, height: 2)
+    fileprivate func addLoginButton() {
+        self.topLogoView.addSubview(loginButton)
+        let width = topLogoView.frame.width
+        loginButton.frame = CGRect(x: 30, y: logoView.frame.height + titleView.frame.height + emailTextField.frame.height + passwordTextField.frame.height + forgotPasswordButton.frame.height + 45, width:  width - 60, height: 40)
+
+        loginButton.addTarget(self, action: #selector(loginButtonDidClicked), for: .touchUpInside)
     }
-    
+
+
     @objc func loginButtonDidClicked(_ sender: UIButton) {
         print("logged In button did clicked")
+        if (passwordTextField.text?.characters.count)! < 5 {
+            self.displayAlertView("Password should have minimum 6 characters", message: "please enter passwod having greater than 6 characters.", handler: { (_) in self.passwordTextField.becomeFirstResponder() })
+        } else {
+        self.view.endEditing(true)
         loadingIndicator.center = view.center
         loadingIndicator.alpha = 0.9
         appDelegate.window?.addSubview(loadingIndicator)
@@ -304,14 +306,13 @@ class LoginViewController: BaseViewController {
             "password": "\(String(describing: passwordTextField.text!))"]
         loginWebService(requestParaDict: requestDict, requestMethod: POST, requestURL: LOGIN_URL) { [weak self] (result) in
             if let strongSelf = self {
-                if result.errorCode == "1" {
+                if result.errorCode == "0" {
                     if let userID = result.result?.user_id {
                         UserDefaults.standard.set(userID, forKey: "userID")
                     }
                     UserDefaults.standard.set(true, forKey: "isLoggedInSkipped")
-                    let homeViewCtrl = FavouriteViewController()
+                    let homeViewCtrl = FirstViewController()
                     DispatchQueue.main.async {
-                        //strongSelf.appDelegate.setupTabBarController()
                         strongSelf.loadingIndicator.alpha = 0
                         strongSelf.navigationController?.pushViewController(homeViewCtrl, animated: true)
                     }
@@ -326,9 +327,8 @@ class LoginViewController: BaseViewController {
                                 UserDefaults.standard.set(userID, forKey: "userID")
                             }
                             UserDefaults.standard.set(true, forKey: "isLoggedInSkipped")
-                            let homeViewCtrl = FavouriteViewController()
+                            let homeViewCtrl = ChooseFavViewController()
                             DispatchQueue.main.async {
-                                //strongSelf.appDelegate.setupTabBarController()
                                 strongerSelf.loadingIndicator.alpha = 0
                                 strongerSelf.navigationController?.pushViewController(homeViewCtrl, animated: true)
                             }
@@ -342,6 +342,11 @@ class LoginViewController: BaseViewController {
                     }
                 })
 
+                } else if result.errorCode == "1" {
+                    DispatchQueue.main.async {
+                        strongSelf.loadingIndicator.alpha = 0
+                        strongSelf.displayAlertView("Login Failed", message: "Incorrect username or password.", handler: nil)
+                    }
                 } else {
                     DispatchQueue.main.async {
                         strongSelf.loadingIndicator.alpha = 0
@@ -350,6 +355,7 @@ class LoginViewController: BaseViewController {
                     
                 }
             }
+        }
         }
     }
     
@@ -360,6 +366,9 @@ class LoginViewController: BaseViewController {
     }
 
     override func viewWillAppear(_ animated: Bool) {
+        if #available(iOS 11.0, *) {
+            self.navigationController?.navigationBar.prefersLargeTitles = false
+        }
         self.navigationController?.navigationBar.isHidden = true
         self.navigationController?.interactivePopGestureRecognizer?.isEnabled = false
     }
@@ -367,11 +376,12 @@ class LoginViewController: BaseViewController {
     @objc func skipLogin() {
         print("Skip button did clicked")
         DispatchQueue.main.async {
+            self.view.endEditing(true)
             self.skipButton.removeFromSuperview()
         }
         UserDefaults.standard.set(true, forKey: "isLoggedInSkipped")
-        let homeViewCtrl = FirstViewController()
-        self.appDelegate.setupTabBarController()
+        UserDefaults.standard.set("", forKey: "userID")
+        let homeViewCtrl = ChooseFavViewController()
         self.navigationController?.pushViewController(homeViewCtrl, animated: true)
     }
     
@@ -403,6 +413,16 @@ class LoginViewController: BaseViewController {
             }
             }.resume()
     }
+
+    override func viewWillDisappear(_ animated: Bool) {
+        self.view.endEditing(true)
+    }
+
+    deinit {
+        NotificationCenter.default.removeObserver(self, name: .UIKeyboardWillShow, object: nil)
+        NotificationCenter.default.removeObserver(self, name: .UIKeyboardWillHide, object: nil)
+        print("removed observers")
+    }
 }
 
 extension String {
@@ -422,10 +442,37 @@ extension LoginViewController: UITextFieldDelegate {
             if !isValid {
                 displayAlertView("This is not an Email", message: "please enter a valid email address", handler: { (_) in
                     self.emailTextField.becomeFirstResponder()
+                    self.loginButton.isEnabled = false
+                    self.loginButton.alpha = 1
                 })
+            } else {
+                 self.loginButton.isEnabled = true
+                 self.loginButton.alpha = 0.5
             }
         }
     }
+
+    func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
+            if textField == passwordTextField {
+            guard let count = passwordTextField.text?.characters.count else { return true}
+                switch count {
+                case 5...:
+                        self.loginButton.alpha = 1;
+                        self.loginButton.isEnabled = true
+                    return true
+                default:
+                        self.loginButton.alpha = 0.5;
+                        self.loginButton.isEnabled = true
+                    return true
+                }
+            } else {
+                self.loginButton.alpha = 1
+                self.loginButton.isEnabled = false
+                return true
+            }
+
+    }
+
     
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
         if textField == emailTextField {
@@ -434,6 +481,73 @@ extension LoginViewController: UITextFieldDelegate {
             self.view.endEditing(true)
         }
         return false
+    }
+}
+
+extension LoginViewController {
+    // MARK: - UIKeyBoardView methods
+    @objc func keyboardWillShow(notification: NSNotification){
+        if keyboardIsShown == false{
+            if #available(iOS 11.0, *){
+                guard let keyboard = (notification.userInfo?[UIKeyboardFrameEndUserInfoKey] as? NSValue)?.cgRectValue else {return}
+
+                self.navigationItem.leftBarButtonItem = nil
+                self.navigationItem.rightBarButtonItem = nil
+                self.navigationItem.setHidesBackButton(true, animated: true)
+
+                let height = view.frame.origin.y - keyboard.height + 80
+
+                view.frame.origin.y =  height
+
+                keyboardIsShown = true
+            } else{
+                guard let keyboard = (notification.userInfo?[UIKeyboardFrameBeginUserInfoKey] as? NSValue)?.cgRectValue else {return}
+
+                self.navigationItem.leftBarButtonItem = nil
+                self.navigationItem.rightBarButtonItem = nil
+                self.navigationItem.setHidesBackButton(true, animated: true)
+
+                let height = view.frame.origin.y - keyboard.height + 80
+
+                view.frame.origin.y =  height
+
+                keyboardIsShown = true
+            }
+        } else{
+            print("not again")
+        }
+    }
+
+    @objc func keyboardWillHide(notification: NSNotification){
+        if keyboardIsShown{
+            if #available(iOS 11.0, *){
+                guard let keyboard = (notification.userInfo?[UIKeyboardFrameBeginUserInfoKey] as? NSValue)?.cgRectValue else {return}
+
+                let height = view.frame.origin.y + keyboard.height - 80 //(view.frame.height) - keyboard.height
+                view.frame.origin.y = height
+                keyboardIsShown = false
+            } else {
+                guard let keyboard = (notification.userInfo?[UIKeyboardFrameBeginUserInfoKey] as? NSValue)?.cgRectValue else {return}
+
+                let height = view.frame.origin.y + keyboard.height - 80 //(view.frame.height) - keyboard.height
+                view.frame.origin.y = height
+                keyboardIsShown = false
+            }
+
+        } else {
+            print("again")
+        }
+    }
+
+    func addingObserverOnView(){
+        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillShow(notification:)), name: .UIKeyboardWillShow, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillHide(notification:)), name: .UIKeyboardWillHide, object: nil)
+        let tapGesture = UITapGestureRecognizer(target: self, action: #selector(dismissKeyboard))
+        self.view.addGestureRecognizer(tapGesture)
+    }
+
+    @objc func dismissKeyboard() {
+        self.view.endEditing(true)
     }
 }
 

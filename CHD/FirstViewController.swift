@@ -139,7 +139,8 @@ class FirstViewController: UITableViewController {
                         switch indexPath.row{
                         case 0:
                             print("My profile")
-                            if APIManager.sharedInstance.isKeyPresentInUserDefaults(key: "userID") {
+                            //if APIManager.sharedInstance.isKeyPresentInUserDefaults(key: "userID") {
+                            if UserDefaults.standard.value(forKey: "userID") as! String != "" {
                                 let vc = MyProfileViewController()
                                 vc.hidesBottomBarWhenPushed = true
                                 strongSelf.navigationController?.pushViewController(vc, animated: true)
@@ -463,6 +464,25 @@ extension FirstViewController {
             APIManager.sharedInstance.getResentPostsData(pageCount: APIManager.sharedInstance.mutablePageCount, completion: {
                 
             })
+        }
+    }
+
+    override func scrollViewWillEndDragging(_ scrollView: UIScrollView, withVelocity velocity: CGPoint, targetContentOffset: UnsafeMutablePointer<CGPoint>) {
+
+        if(velocity.y>0) {
+            //Code will work without the animation block.I am using animation block incase if you want to set any delay to it.
+            UIView.animate(withDuration: 2.5, delay: 0, options: UIViewAnimationOptions(), animations: {
+                self.navigationController?.setNavigationBarHidden(true, animated: true)
+                self.tabBarController?.tabBar.isHidden = true
+                print("Hide")
+            }, completion: nil)
+
+        } else {
+            UIView.animate(withDuration: 2.5, delay: 0, options: UIViewAnimationOptions(), animations: {
+                self.navigationController?.setNavigationBarHidden(false, animated: true)
+                self.tabBarController?.tabBar.isHidden = false
+                print("Unhide")
+            }, completion: nil)
         }
     }
 }

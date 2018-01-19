@@ -12,7 +12,7 @@ import UIKit
 class LeftViewController: UIViewController {
     var tableView: UITableView!
     var items = ["Home", "Health Center", "Beauty & Skin Care", "Fitness", "Health Conditions", "Health News", "Reviews"]
-    var anotherItems = ["Sign In" ,"Advertise with Us", "Contact Us", "Terms of Use", "About Us", "Share This App"]
+    var anotherItems = ["My Profile" ,"Advertise with Us", "Contact Us", "Terms of Use", "About Us", "Share This App"]
     var didselected: ((IndexPath, Int, Int) -> ())?
 
     var socialMediaView: UIStackView!
@@ -21,8 +21,9 @@ class LeftViewController: UIViewController {
         super.viewDidLoad()
         view.backgroundColor = .white
 
-        if APIManager.sharedInstance.isKeyPresentInUserDefaults(key: "userID") {
-            anotherItems = ["My Profile" ,"Advertise with Us", "Contact Us", "Terms of Use", "About Us", "Share This App"]
+        //if APIManager.sharedInstance.isKeyPresentInUserDefaults(key: "userID") {
+        if UserDefaults.standard.value(forKey: "userID") as! String == "" {
+            anotherItems = ["Sign In" ,"Advertise with Us", "Contact Us", "Terms of Use", "About Us", "Share This App"]
         }
 
         tableView = UITableView()

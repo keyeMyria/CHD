@@ -10,7 +10,6 @@
 		284AA221200F4DEC00138B96 /* NotificationItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 284AA220200F4DEC00138B96 /* NotificationItem.swift */; };
 		9106C2C5200CB3630049A950 /* ForgotPasswordViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9106C2C4200CB3630049A950 /* ForgotPasswordViewController.swift */; };
 		9106C2C7200CB8EC0049A950 /* AlertViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9106C2C6200CB8EC0049A950 /* AlertViewController.swift */; };
-		911811BC200DD01E00096B30 /* CategoryTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 911811BB200DD01E00096B30 /* CategoryTableViewCell.swift */; };
 		911C57DF1FEA6B7400D2CB57 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 911C57DE1FEA6B7400D2CB57 /* Assets.xcassets */; };
 		911C57ED1FEA6B7400D2CB57 /* CHDTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 911C57EC1FEA6B7400D2CB57 /* CHDTests.swift */; };
 		911C57F81FEA6B7400D2CB57 /* CHDUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 911C57F71FEA6B7400D2CB57 /* CHDUITests.swift */; };
@@ -40,9 +39,11 @@
 		91521F58200769330096B4D5 /* IntroCollectionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 91521F57200769330096B4D5 /* IntroCollectionViewController.swift */; };
 		91521F5A20076E8C0096B4D5 /* IntroPagesCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 91521F5920076E8C0096B4D5 /* IntroPagesCollectionViewCell.swift */; };
 		91521F5E2007980C0096B4D5 /* LoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 91521F5D2007980C0096B4D5 /* LoginViewController.swift */; };
+		9153BD2E2010CB91000D0DC3 /* ImageCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9153BD2D2010CB91000D0DC3 /* ImageCell.swift */; };
+		9153BD302010CB9C000D0DC3 /* GridLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9153BD2F2010CB9C000D0DC3 /* GridLayout.swift */; };
+		9153BD322010D3C8000D0DC3 /* ChooseFavViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9153BD312010D3C7000D0DC3 /* ChooseFavViewController.swift */; };
 		9180817C200F235D009504D3 /* MyProfileViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9180817A200F235D009504D3 /* MyProfileViewController.swift */; };
 		9180817D200F235D009504D3 /* MyProfileViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 9180817B200F235D009504D3 /* MyProfileViewController.xib */; };
-		918A0B24200DCE9A0019D72A /* FavouriteViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 918A0B23200DCE9A0019D72A /* FavouriteViewController.swift */; };
 		91B6E1941FED062B00A9A532 /* ReachabilityManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 91B6E1931FED062B00A9A532 /* ReachabilityManager.swift */; };
 		F93F4CEE91A688C662FF93E7 /* Pods_CHD.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 980EFB060680880E445D8873 /* Pods_CHD.framework */; };
 /* End PBXBuildFile section */
@@ -70,7 +71,6 @@
 		7BA87FBA58F848DEE0F24339 /* Pods-CHD.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-CHD.release.xcconfig"; path = "Pods/Target Support Files/Pods-CHD/Pods-CHD.release.xcconfig"; sourceTree = "<group>"; };
 		9106C2C4200CB3630049A950 /* ForgotPasswordViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ForgotPasswordViewController.swift; sourceTree = "<group>"; };
 		9106C2C6200CB8EC0049A950 /* AlertViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlertViewController.swift; sourceTree = "<group>"; };
-		911811BB200DD01E00096B30 /* CategoryTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CategoryTableViewCell.swift; sourceTree = "<group>"; };
 		911C57D41FEA6B7400D2CB57 /* CHD.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = CHD.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		911C57DE1FEA6B7400D2CB57 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		911C57E31FEA6B7400D2CB57 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -107,9 +107,11 @@
 		91521F57200769330096B4D5 /* IntroCollectionViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IntroCollectionViewController.swift; sourceTree = "<group>"; };
 		91521F5920076E8C0096B4D5 /* IntroPagesCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IntroPagesCollectionViewCell.swift; sourceTree = "<group>"; };
 		91521F5D2007980C0096B4D5 /* LoginViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginViewController.swift; sourceTree = "<group>"; };
+		9153BD2D2010CB91000D0DC3 /* ImageCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ImageCell.swift; sourceTree = "<group>"; };
+		9153BD2F2010CB9C000D0DC3 /* GridLayout.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GridLayout.swift; sourceTree = "<group>"; };
+		9153BD312010D3C7000D0DC3 /* ChooseFavViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChooseFavViewController.swift; sourceTree = "<group>"; };
 		9180817A200F235D009504D3 /* MyProfileViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyProfileViewController.swift; sourceTree = "<group>"; };
 		9180817B200F235D009504D3 /* MyProfileViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = MyProfileViewController.xib; sourceTree = "<group>"; };
-		918A0B23200DCE9A0019D72A /* FavouriteViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FavouriteViewController.swift; sourceTree = "<group>"; };
 		91B6E1931FED062B00A9A532 /* ReachabilityManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ReachabilityManager.swift; sourceTree = "<group>"; };
 		91C68CDD2005F25300847C97 /* CHD.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = CHD.entitlements; sourceTree = "<group>"; };
 		980EFB060680880E445D8873 /* Pods_CHD.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_CHD.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -187,7 +189,7 @@
 				91521F57200769330096B4D5 /* IntroCollectionViewController.swift */,
 				91521F5D2007980C0096B4D5 /* LoginViewController.swift */,
 				9106C2C4200CB3630049A950 /* ForgotPasswordViewController.swift */,
-				918A0B23200DCE9A0019D72A /* FavouriteViewController.swift */,
+				9153BD312010D3C7000D0DC3 /* ChooseFavViewController.swift */,
 				911C58851FEA6D6F00D2CB57 /* FirstViewController.swift */,
 				911C58831FEA6D6E00D2CB57 /* SecondViewController.swift */,
 				911C58861FEA6D6F00D2CB57 /* ThirdViewController.swift */,
@@ -241,7 +243,7 @@
 				911C586F1FEA6CEF00D2CB57 /* PostTableViewCell.swift */,
 				911C586E1FEA6CEF00D2CB57 /* PostTableViewCell.xib */,
 				91521F5920076E8C0096B4D5 /* IntroPagesCollectionViewCell.swift */,
-				911811BB200DD01E00096B30 /* CategoryTableViewCell.swift */,
+				9153BD2D2010CB91000D0DC3 /* ImageCell.swift */,
 			);
 			name = Cells;
 			sourceTree = "<group>";
@@ -258,6 +260,7 @@
 		911C58991FEA6D9200D2CB57 /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
+				9153BD2F2010CB9C000D0DC3 /* GridLayout.swift */,
 				9106C2C6200CB8EC0049A950 /* AlertViewController.swift */,
 				91B6E1931FED062B00A9A532 /* ReachabilityManager.swift */,
 				911C57DE1FEA6B7400D2CB57 /* Assets.xcassets */,
@@ -498,13 +501,11 @@
 				911C588C1FEA6D7000D2CB57 /* FitnessViewController.swift in Sources */,
 				911C586B1FEA6CC000D2CB57 /* APIManager.swift in Sources */,
 				91521F5E2007980C0096B4D5 /* LoginViewController.swift in Sources */,
-				918A0B24200DCE9A0019D72A /* FavouriteViewController.swift in Sources */,
 				911C58691FEA6CC000D2CB57 /* HTTPAPICalling.swift in Sources */,
 				91B6E1941FED062B00A9A532 /* ReachabilityManager.swift in Sources */,
 				911C588D1FEA6D7000D2CB57 /* LeftViewController.swift in Sources */,
 				911C58911FEA6D7000D2CB57 /* SecondViewController.swift in Sources */,
 				911C58961FEA6D7000D2CB57 /* AdvertWithUsViewController.swift in Sources */,
-				911811BC200DD01E00096B30 /* CategoryTableViewCell.swift in Sources */,
 				911C58981FEA6D7F00D2CB57 /* AppDelegate.swift in Sources */,
 				9106C2C7200CB8EC0049A950 /* AlertViewController.swift in Sources */,
 				9106C2C5200CB3630049A950 /* ForgotPasswordViewController.swift in Sources */,
@@ -515,7 +516,9 @@
 				911C58921FEA6D7000D2CB57 /* ReviewTableViewController.swift in Sources */,
 				911C588B1FEA6D7000D2CB57 /* DetailsViewController.swift in Sources */,
 				91521F58200769330096B4D5 /* IntroCollectionViewController.swift in Sources */,
+				9153BD322010D3C8000D0DC3 /* ChooseFavViewController.swift in Sources */,
 				911C58951FEA6D7000D2CB57 /* AboutUsViewController.swift in Sources */,
+				9153BD302010CB9C000D0DC3 /* GridLayout.swift in Sources */,
 				911C58901FEA6D7000D2CB57 /* HealthCenterViewController.swift in Sources */,
 				911C588A1FEA6D7000D2CB57 /* SearchTableViewController.swift in Sources */,
 				911C58931FEA6D7000D2CB57 /* FirstViewController.swift in Sources */,
@@ -523,6 +526,7 @@
 				911C58711FEA6CEF00D2CB57 /* LoadingCell.swift in Sources */,
 				911C586A1FEA6CC000D2CB57 /* Constants.swift in Sources */,
 				911C58891FEA6D7000D2CB57 /* ContactUsViewController.swift in Sources */,
+				9153BD2E2010CB91000D0DC3 /* ImageCell.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

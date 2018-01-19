@@ -30,9 +30,28 @@ class APIManager {
     }
     
     func getResentPostsData(pageCount: Int, completion: @escaping () -> ()) {
-        let requestDict:[String: String] = ["pageNo":"\(pageCount)",
-            "pageSize":"10",
-            "reference":"homepage"]
+        var categoryArray = [Int]()
+        let userID = UserDefaults.standard.value(forKey: "userID") as! String
+        if APIManager.sharedInstance.isKeyPresentInUserDefaults(key: "category"){
+            categoryArray = UserDefaults.standard.value(forKey: "category") as! [Int]
+        }
+        let isCategoryAvailable = APIManager.sharedInstance.isKeyPresentInUserDefaults(key: "category")
+        var requestDict:[String: Any]
+        if userID.isEmpty && !isCategoryAvailable {
+            requestDict = ["pageNo":"\(pageCount)",
+                "pageSize":"10",
+                "reference":"homepage"]
+        } else if userID.isEmpty && isCategoryAvailable {
+            requestDict = ["pageNo":"\(pageCount)",
+                "pageSize":"10",
+                "reference":"homepage",
+                "categories" : categoryArray]
+        } else {
+            requestDict = ["pageNo":"\(pageCount)",
+                "pageSize":"10",
+                "reference":"homepage",
+                "user_id" : userID ]
+        }
         HTTPAPICalling.sharedInstance.makeRequestForAPI(requestMethod: POST, requestURL: BASE_URL, requestParaDic: requestDict){(dict) in
             guard let data = dict?.data else {return}
             for i in 0..<data.count {

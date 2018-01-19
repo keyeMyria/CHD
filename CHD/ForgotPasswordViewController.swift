@@ -12,27 +12,37 @@ class ForgotPasswordViewController: BaseViewController {
     
     private lazy var emailTextField: CustomTextField = {
         let textField = CustomTextField()
-        textField.placeholder = "Type e-mail to get password"
+        textField.placeholder = "E-mail"
+        let imageView = UIImageView(image: #imageLiteral(resourceName: "username"))
+        imageView.frame = CGRect(x: 0, y: 0, width: 20, height: 20)
+        imageView.contentMode = .scaleAspectFit
+        textField.leftViewMode = .always
+        textField.leftView = imageView
         textField.font = UIFont.systemFont(ofSize: 13)
         textField.backgroundColor = .white
-        textField.layer.cornerRadius = 6
         textField.keyboardType = .emailAddress
         textField.autocapitalizationType = .none
         textField.returnKeyType = .next
-        textField.layer.borderWidth = 0.4
         textField.autocorrectionType = .no
         return textField
+    }()
+
+    private lazy var underline1: UILabel = {
+        let secondView = UILabel()
+        secondView.backgroundColor = .lightGray
+        return secondView
     }()
     
     private lazy var sendEmailButton: UIButton = {
         let button = UIButton()
-        button.setTitle("Send email", for: .normal)
+        button.setImage(#imageLiteral(resourceName: "Send email"), for: .normal)
+        //button.alpha = 0.7
         button.setTitleColor(.white, for: .normal)
-        button.backgroundColor = #colorLiteral(red: 0.4666666687, green: 0.7647058964, blue: 0.2666666806, alpha: 1)
-        button.layer.cornerRadius = 6
+        button.imageView?.contentMode = .scaleAspectFill
+        button.isEnabled = false
         return button
     }()
-    
+
     private lazy var loadingIndicator: UIView = {
         let view = UIView()
         view.frame.size = CGSize(width: 210, height: 100)
@@ -57,27 +67,34 @@ class ForgotPasswordViewController: BaseViewController {
         super.viewDidLoad()
         self.view.backgroundColor = .white
         self.title = "Forgot Password"
+
+        emailTextField.delegate = self
         
         if #available(iOS 11.0, *){
-            self.emailTextField.frame = CGRect(x: 10, y: (self.navigationController?.navigationBar.frame.height)! + 10, width: view.frame.width - 20, height: 30)
+            self.emailTextField.frame = CGRect(x: 10, y: (self.navigationController?.navigationBar.frame.height)! + 30, width: view.frame.width - 20, height: 30)
         } else {
             self.emailTextField.frame = CGRect(x: 10, y: (self.navigationController?.navigationBar.frame.height)! + 30, width: view.frame.width - 20, height: 30)
         }
         self.view.addSubview(emailTextField)
+
+       underline1.frame = CGRect(x: 10, y: emailTextField.frame.origin.y + emailTextField.frame.height, width: view.frame.width - 20, height: 1)
+        self.view.addSubview(underline1)
         
         sendEmailButton.frame = CGRect(x: 10, y: emailTextField.frame.origin.y + emailTextField.frame.height + 20, width: view.frame.width - 20, height: 30)
         sendEmailButton.addTarget(self, action: #selector(sendEmailToUser), for: .touchUpInside)
         self.view.addSubview(sendEmailButton)
+
+
     }
     
     override func viewWillAppear(_ animated: Bool) {
         self.navigationController?.navigationBar.isHidden = false
     }
-    
 
     @objc func sendEmailToUser() {
         guard let isValid = emailTextField.text?.isValidEmail() else { return }
         if isValid {
+            self.sendEmailButton.isEnabled = true
             loadingIndicator.center = view.center
             loadingIndicator.alpha = 0.9
             appDelegate.window?.addSubview(loadingIndicator)
@@ -107,5 +124,17 @@ class ForgotPasswordViewController: BaseViewController {
             })
         }
         
+    }
+}
+
+extension ForgotPasswordViewController: UITextFieldDelegate {
+    func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
+        if (emailTextField.text?.isValidEmail())! {
+            self.sendEmailButton.isEnabled = true
+            return true
+        } else {
+            self.sendEmailButton.isEnabled = false
+            return true
+        }
     }
 }
