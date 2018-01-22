@@ -16,7 +16,7 @@
             <connections>
                 <outlet property="chooseImageButton" destination="VWY-Xe-69t" id="4Za-QY-Zlx"/>
                 <outlet property="cityTextfield" destination="Jft-G2-3fc" id="Ppt-bV-sAz"/>
-                <outlet property="countryTextfield" destination="MxO-uh-pL4" id="2U4-zO-UJI"/>
+                <outlet property="countryTextfield" destination="pRt-vp-Uh5" id="iHa-0Y-UIl"/>
                 <outlet property="firstName" destination="fFN-UX-1nt" id="dqw-NB-zWh"/>
                 <outlet property="gender" destination="OAl-Gg-iwn" id="Poc-7Y-Pd2"/>
                 <outlet property="lastName" destination="cMs-uq-bPj" id="tc7-lw-np9"/>
@@ -32,7 +32,7 @@
             <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
-                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="drawerImage" translatesAutoresizingMaskIntoConstraints="NO" id="0nr-Ca-27J">
+                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="user-placeholder" translatesAutoresizingMaskIntoConstraints="NO" id="0nr-Ca-27J">
                     <rect key="frame" x="0.0" y="64" width="375" height="208"/>
                 </imageView>
                 <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="First name" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="fFN-UX-1nt">
@@ -191,7 +191,7 @@
         </view>
     </objects>
     <resources>
-        <image name="drawerImage" width="406" height="182"/>
         <image name="icons8-camera-100" width="100" height="100"/>
+        <image name="user-placeholder" width="400" height="270"/>
     </resources>
 </document>

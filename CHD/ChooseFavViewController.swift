@@ -25,14 +25,34 @@ class ChooseFavViewController: UIViewController, UICollectionViewDelegateFlowLay
     var pageCount = 1
     var array = [Model]()
     var favArray = [Int]()
+
     var shouldShowLoadingCell = true
     var APIReference = "health_center"
     var pageTitle = "Welcome to CHD"
     var subTitle = "Follow Topics"
 
+    private lazy var loadingIndicator: UIView = {
+        let view = UIView()
+        view.frame.size = CGSize(width: 210, height: 100)
+        view.layer.cornerRadius = 6
+        view.addSubview(activityIndicator)
+        activityIndicator.color = .white
+        activityIndicator.frame = CGRect(x: 20, y: view.frame.height / 2 - 15, width: 30, height: 30)
+        activityIndicator.startAnimating()
+        let label = UILabel()
+        label.text = "Please wait..."
+        label.textColor = .white
+        label.frame = CGRect(x: 80, y: view.frame.height / 2 - 15, width: 150, height: 30)
+        view.addSubview(label)
+        view.backgroundColor = .black
+        view.alpha = 0
+        return view
+    }()
+
     let appDelegate = UIApplication.shared.delegate as! AppDelegate
 
-    
+    let userID = UserDefaults.standard.value(forKey: "userID") as! String
+
     override func viewDidLoad() {
         super.viewDidLoad()
 
@@ -66,12 +86,24 @@ class ChooseFavViewController: UIViewController, UICollectionViewDelegateFlowLay
         fullImageView.alpha = 0
         self.view.addSubview(fullImageView)
 
-        view.addSubview(activityIndicator)
-        activityIndicator.center = view.center
-        activityIndicator.startAnimating()
-        
-        apiCallingFunction()
+        let window = appDelegate.window
+        window?.addSubview(loadingIndicator)
+        loadingIndicator.center = (window?.center)!
+        loadingIndicator.alpha = 0.9
 
+        apiCallingFunction()
+        if userID.isEmpty {
+            if APIManager.sharedInstance.isKeyPresentInUserDefaults(key: "category") {
+                favArray = UserDefaults.standard.value(forKey: "category") as! [Int]
+                self.gridCollectionView.reloadData()
+            }
+        } else {
+            getCategories()
+        }
+    }
+
+    override var prefersStatusBarHidden : Bool {
+        return true
     }
 
     fileprivate func apiCallingFunction() {
@@ -112,8 +144,8 @@ class ChooseFavViewController: UIViewController, UICollectionViewDelegateFlowLay
                 self.array.append(Model(title: pageTitle, category: category))
             }
             DispatchQueue.main.async {
-                activityIndicator.stopAnimating()
                 self.gridCollectionView.reloadData()
+                self.loadingIndicator.alpha = 0
             }
         }
     }
@@ -126,11 +158,11 @@ class ChooseFavViewController: UIViewController, UICollectionViewDelegateFlowLay
         self.navigationController?.view.backgroundColor = UIColor.white
 
         let nextView = UIView()
-        nextView.frame = CGRect(x: 0, y: 0, width: 60, height: 60)
+        nextView.frame = CGRect(x: 0, y: 0, width: 80, height: 60)
 
         let nextButton = UIButton()
         nextButton.setImage(#imageLiteral(resourceName: "icons8-right-filled-50"), for: .normal)
-        nextButton.frame = CGRect(x: 20, y: 10, width: 30, height: 30)
+        nextButton.frame = CGRect(x: 35, y: 10, width: 40, height: 40)
         nextButton.addTarget(self, action: #selector(doneButtonDidClicked), for: .touchUpInside)
         nextView.addSubview(nextButton)
 
@@ -140,12 +172,47 @@ class ChooseFavViewController: UIViewController, UICollectionViewDelegateFlowLay
         self.navigationItem.setHidesBackButton(true, animated: true)
     }
 
+    func getCategories() {
+
+        //let userID = UserDefaults.standard.value(forKey: "userID") as! String
+
+        let link = "http://uat.mobodesk.com/chd-api/api/?page=profile_favourite&user_id=\(userID)"
+
+//        LoginViewController.sharedInstance.loginWebService(requestParaDict: nil, requestMethod: GET, requestURL: link) { (result) in
+//            print(result.result?.category_id)
+//
+//        }
+        HTTPAPICalling.sharedInstance.fetchAPIByRegularConvention(requestMethod: GET, requestURL: link, requestParaDic: nil) { (dict) in
+            let errorCode = dict!["errorCode"] as! String
+            if errorCode == "1" {
+                let result: [NSDictionary] = dict!["result"] as! [NSDictionary]
+
+                for category in result {
+                    let cate = category["category_id"] as! String
+                    self.favArray.append(Int(cate)!)
+                    print(self.favArray)
+                    //need to filter array so that no two same categories will add
+                    //self.favArray = self.favArray.filter{$0 != self.favArray[index]}
+                    DispatchQueue.main.async {
+                        self.gridCollectionView.reloadData()
+                        self.loadingIndicator.alpha = 0
+                    }
+
+                }
+            }
+        }
+    }
+
     @objc func doneButtonDidClicked() {
         print("done")
-        var userID: String = ""
-        if APIManager.sharedInstance.isKeyPresentInUserDefaults(key: "userID") {
-            userID = UserDefaults.standard.value(forKey: "userID") as! String
 
+        loadingIndicator.alpha = 0.9
+        //let userID: String = UserDefaults.standard.value(forKey: "userID") as! String
+        let vc = FirstViewController()
+        let unique = Array(Set(favArray))
+        favArray = unique
+        print(favArray)
+        if !userID.isEmpty {
             let requestParamers = ["user_id": userID,
                                    "category_ids":favArray] as [String : Any]
             LoginViewController.sharedInstance.loginWebService(requestParaDict: requestParamers, requestMethod: POST, requestURL: ADD_TO_FAVOURITE_URL) { [weak self] (result) in
@@ -153,17 +220,18 @@ class ChooseFavViewController: UIViewController, UICollectionViewDelegateFlowLay
                     print(result.errorCode ?? "default error")
                     DispatchQueue.main.async {
                         strongSelf.appDelegate.setupTabBarController()
-                        let vc = FirstViewController()
+                        strongSelf.loadingIndicator.alpha = 0
                         strongSelf.navigationController?.pushViewController(vc, animated: true)
                     }
                 }
             }
         } else {
             DispatchQueue.main.async {
-                UserDefaults.standard.set("", forKey: "userID")
+                //UserDefaults.standard.set("", forKey: "userID")
                 UserDefaults.standard.set(self.favArray, forKey: "category")
                 self.appDelegate.setupTabBarController()
-                let vc = FirstViewController()
+                //let vc = FirstViewController()
+                self.loadingIndicator.alpha = 0
                 self.navigationController?.pushViewController(vc, animated: true)
             }
         }

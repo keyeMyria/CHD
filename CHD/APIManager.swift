@@ -14,6 +14,7 @@ class APIManager {
     var mutablePageCount = 1
     var delegate: (() -> ())?
     var shouldShowLoadingCell = true
+    var reloadTableView = true
     
     class var sharedInstance :APIManager {
         struct Singleton {
@@ -32,20 +33,27 @@ class APIManager {
     func getResentPostsData(pageCount: Int, completion: @escaping () -> ()) {
         var categoryArray = [Int]()
         let userID = UserDefaults.standard.value(forKey: "userID") as! String
-        if APIManager.sharedInstance.isKeyPresentInUserDefaults(key: "category"){
+        let isCategoryAvailable = APIManager.sharedInstance.isKeyPresentInUserDefaults(key: "category")
+        if isCategoryAvailable{
             categoryArray = UserDefaults.standard.value(forKey: "category") as! [Int]
         }
-        let isCategoryAvailable = APIManager.sharedInstance.isKeyPresentInUserDefaults(key: "category")
+
         var requestDict:[String: Any]
         if userID.isEmpty && !isCategoryAvailable {
             requestDict = ["pageNo":"\(pageCount)",
                 "pageSize":"10",
                 "reference":"homepage"]
         } else if userID.isEmpty && isCategoryAvailable {
-            requestDict = ["pageNo":"\(pageCount)",
-                "pageSize":"10",
-                "reference":"homepage",
-                "categories" : categoryArray]
+            if categoryArray.count == 0 {
+                requestDict = ["pageNo":"\(pageCount)",
+                    "pageSize":"10",
+                    "reference":"homepage"]
+            } else {
+                requestDict = ["pageNo":"\(pageCount)",
+                    "pageSize":"10",
+                    "reference":"homepage",
+                    "categories" : categoryArray]
+            }
         } else {
             requestDict = ["pageNo":"\(pageCount)",
                 "pageSize":"10",
@@ -146,12 +154,20 @@ class APIManager {
         return shouldShowLoadingCell ? count + 1 : count
     }
     
-    func cellForRow(at indexPath: IndexPath) -> PostData? {
-        if indexPath.row == array.count - 2 {
-            getResentPostsData(pageCount: mutablePageCount) {
-//                self.mutablePageCount += 1
+    func cellForRow(at indexPath: IndexPath, tableView: UITableView) -> PostData? {
+//        if mutablePageCount == 1 && reloadTableView {
+//            getResentPostsData(pageCount: mutablePageCount, completion: {
+//                DispatchQueue.main.async {
+//                    tableView.reloadData()
+//                    self.reloadTableView = false
+//                }
+//            })
+//        } else {
+            if indexPath.row == array.count - 2 {
+                getResentPostsData(pageCount: mutablePageCount) {
+                }
             }
-        }
+//        }
         return array[indexPath.row] as PostData
     }
     

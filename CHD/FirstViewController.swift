@@ -327,6 +327,10 @@ class FirstViewController: UITableViewController {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
 
+//        DispatchQueue.main.async {
+//            self.tableView.reloadData()
+//        }
+
         self.navigationController?.navigationBar.backIndicatorImage = nil
         self.navigationController?.navigationBar.isTranslucent = false
         navigationController?.view.backgroundColor = UIColor.white
@@ -416,7 +420,7 @@ extension FirstViewController {
             
             return cell
         } else {
-            guard let post = APIManager.sharedInstance.cellForRow(at: indexPath) else {return UITableViewCell()}
+            guard let post = APIManager.sharedInstance.cellForRow(at: indexPath, tableView: tableView) else {return UITableViewCell()}
             let cell = tableView.dequeueReusableCell(withIdentifier: "cell") as! PostTableViewCell
             
             cell.date.text = formattedDate(post.post_date!)

@@ -72,6 +72,7 @@ class LoginViewController: BaseViewController {
     private lazy var skipButton: UIButton = {
         var button = UIButton()
         button.setTitle("Skip", for: .normal)
+        button.frame.size = CGSize(width: 80, height: 30)
         button.translatesAutoresizingMaskIntoConstraints = false
         button.setTitleColor(.lightGray, for: .normal)
         return button
@@ -311,9 +312,10 @@ class LoginViewController: BaseViewController {
                         UserDefaults.standard.set(userID, forKey: "userID")
                     }
                     UserDefaults.standard.set(true, forKey: "isLoggedInSkipped")
-                    let homeViewCtrl = FirstViewController()
+                    let homeViewCtrl = ChooseFavViewController()
                     DispatchQueue.main.async {
                         strongSelf.loadingIndicator.alpha = 0
+                        //strongSelf.appDelegate.setupTabBarController()
                         strongSelf.navigationController?.pushViewController(homeViewCtrl, animated: true)
                     }
                     

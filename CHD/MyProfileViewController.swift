@@ -25,8 +25,11 @@ class MyProfileViewController: UIViewController,UIImagePickerControllerDelegate,
     var keyboardIsShown = false
     let backButton = UIButton()
     let backView = UIView()
-    let signOut = UIButton(type: .system)
-
+    //let signOut = UIButton()
+    //let favoutiteButton = UIButton()
+    var signOutButton: UIBarButtonItem?
+    var favButton: UIBarButtonItem?
+    var isFromGallary: Bool = false
 
     private lazy var loadingIndicator: UIView = {
         let view = UIView()
@@ -65,51 +68,72 @@ class MyProfileViewController: UIViewController,UIImagePickerControllerDelegate,
 
         navigationItem.leftBarButtonItem = UIBarButtonItem(customView: backView)
 
+        let favoutiteButton = UIButton()
+        favoutiteButton.setImage(#imageLiteral(resourceName: "icons8-heart-outline-100"), for: .normal)
+        favoutiteButton.frame = CGRect(x: 0, y: 0, width: 30, height: 30)
+        favoutiteButton.addTarget(self, action: #selector(favButtonDidClicked), for: .touchUpInside)
+        favButton = UIBarButtonItem(customView: favoutiteButton)
 
-        signOut.setTitle("Sign out", for: .normal)
-        signOut.setTitleColor(.white, for: .normal)
-        signOut.titleLabel?.font = UIFont.systemFont(ofSize: 15, weight: .semibold)
-        signOut.frame = CGRect(x: 0, y: 0, width: 80, height: 30)
+        let signOut = UIButton()
+        signOut.setImage(#imageLiteral(resourceName: "icons8-export-100"), for: .normal)
+        signOut.frame = CGRect(x: 0, y: 0, width: 30, height: 30)
         signOut.addTarget(self, action: #selector(signOutButtonDidClicked), for: .touchUpInside)
-        self.navigationItem.rightBarButtonItem = UIBarButtonItem(customView: signOut)
+        signOutButton = UIBarButtonItem(customView: signOut)
+       // self.navigationItem.rightBarButtonItem = UIBarButtonItem(customView: signOut)
 
-
+        self.navigationItem.rightBarButtonItems = [signOutButton!, favButton!]  // = UIBarButtonItem(customView: signOut)
         addingObserverOnView()
     }
 
     override func viewWillAppear(_ animated: Bool) {
+//        if APIManager.sharedInstance.isKeyPresentInUserDefaults(key: "userID") {
+//            let fname = UserDefaults.standard.value(forKey: "fname") as! String //""
+//            if fname.isEmpty {
+//                getUserData()
+//            } else {
+//                setValueToTextFields()
+//            }
+//        } else {
+//            getUserData()
+//        }
+        if !isFromGallary {
+            getUserData()
+        }
+    }
 
-        setValueToTextFields()
+    @objc func favButtonDidClicked() {
+        let vc = ChooseFavViewController()
+        self.navigationController?.pushViewController(vc, animated: true)
     }
 
     @objc func signOutButtonDidClicked() {
         print("sign out")
         UserDefaults.standard.set("", forKey: "userID")
         UserDefaults.standard.set(false, forKey: "isLoggedInSkipped")
-        UserDefaults.standard.set("", forKey: "fname")
-        UserDefaults.standard.set("", forKey: "lname")
-        //UserDefaults.standard.set(sex!, forKey: "gender")
-        UserDefaults.standard.set("", forKey: "dob")
-        UserDefaults.standard.set("", forKey: "street")
-        UserDefaults.standard.set("", forKey: "city")
-        UserDefaults.standard.set("", forKey: "state")
-        UserDefaults.standard.set("", forKey: "country")
-        UserDefaults.standard.set("", forKey: "zip")
-        UserDefaults.standard.set("", forKey: "timezone")
-        UserDefaults.standard.set("", forKey: "profileImage")
-
-        func resetDefaults() {
-            let defaults = UserDefaults.standard
-            let dictionary = defaults.dictionaryRepresentation()
-            dictionary.keys.forEach { key in
-                defaults.removeObject(forKey: key)
-            }
-        }
-
-
-
-        UserDefaults.standard.synchronize()
-        UserDefaults.standard.synchronize()
+//        UserDefaults.standard.set("", forKey: "fname")
+//        UserDefaults.standard.set("", forKey: "lname")
+//        //UserDefaults.standard.set(sex!, forKey: "gender")
+//        UserDefaults.standard.set("", forKey: "dob")
+//        UserDefaults.standard.set("", forKey: "street")
+//        UserDefaults.standard.set("", forKey: "city")
+//        UserDefaults.standard.set("", forKey: "state")
+//        UserDefaults.standard.set("", forKey: "country")
+//        UserDefaults.standard.set("", forKey: "zip")
+//        UserDefaults.standard.set("", forKey: "timezone")
+//        UserDefaults.standard.set("", forKey: "profileImage")
+//
+//        func resetDefaults() {
+//            let defaults = UserDefaults.standard
+//            let dictionary = defaults.dictionaryRepresentation()
+//            dictionary.keys.forEach { key in
+//                defaults.removeObject(forKey: key)
+//            }
+//        }
+//
+//
+//
+//        UserDefaults.standard.synchronize()
+//        UserDefaults.standard.synchronize()
         let appDelegate = UIApplication.shared.delegate as! AppDelegate
         appDelegate.setupLoginNavigationController()
 
@@ -122,6 +146,7 @@ class MyProfileViewController: UIViewController,UIImagePickerControllerDelegate,
     
     @IBAction func chooseImageButtonClicked(_ sender: UIButton) {
         print("Button clicked")
+        self.isFromGallary = true
         let myPickerController = UIImagePickerController()
         myPickerController.delegate = self;
         myPickerController.sourceType = UIImagePickerControllerSourceType.photoLibrary
@@ -156,6 +181,7 @@ class MyProfileViewController: UIViewController,UIImagePickerControllerDelegate,
 
         self.dismiss(animated: true) {
             self.myImageUploadRequest()
+            self.isFromGallary = false
         }
     }
 
@@ -176,17 +202,18 @@ class MyProfileViewController: UIViewController,UIImagePickerControllerDelegate,
         
         HTTPAPICalling.sharedInstance.fetchAPIByRegularConvention(requestMethod: POST, requestURL: requestURL, requestParaDic: requestDict , completion: { (dict) in
             completion(dict!)
-            UserDefaults.standard.set(self.firstName.text!, forKey: "fname")
-            UserDefaults.standard.set(self.lastName.text!, forKey: "lname")
-            UserDefaults.standard.set(sex!, forKey: "gender")
-            UserDefaults.standard.set("1988/12/04", forKey: "dob")
-            UserDefaults.standard.set(self.streetTextfield.text!, forKey: "street")
-            UserDefaults.standard.set(self.cityTextfield.text!, forKey: "city")
-            UserDefaults.standard.set(self.stateTextField.text!, forKey: "state")
-            UserDefaults.standard.set(self.countryTextfield.text!, forKey: "country")
-            UserDefaults.standard.set(self.zipTextfield.text!, forKey: "zip")
-            UserDefaults.standard.set("ASIA/COLOMBO", forKey: "timezone")
-            UserDefaults.standard.synchronize()
+
+//            UserDefaults.standard.set(self.firstName.text!, forKey: "fname")
+//            UserDefaults.standard.set(self.lastName.text!, forKey: "lname")
+//            UserDefaults.standard.set(sex!, forKey: "gender")
+//            UserDefaults.standard.set("1988/12/04", forKey: "dob")
+//            UserDefaults.standard.set(self.streetTextfield.text!, forKey: "street")
+//            UserDefaults.standard.set(self.cityTextfield.text!, forKey: "city")
+//            UserDefaults.standard.set(self.stateTextField.text!, forKey: "state")
+//            UserDefaults.standard.set(self.countryTextfield.text!, forKey: "country")
+//            UserDefaults.standard.set(self.zipTextfield.text!, forKey: "zip")
+//            UserDefaults.standard.set("ASIA/COLOMBO", forKey: "timezone")
+//            UserDefaults.standard.synchronize()
         })
     }
 
@@ -205,9 +232,10 @@ extension MyProfileViewController {
             if #available(iOS 11.0, *){
                 guard let keyboard = (notification.userInfo?[UIKeyboardFrameEndUserInfoKey] as? NSValue)?.cgRectValue else {return}
 
-                self.navigationItem.leftBarButtonItem = nil
-                self.navigationItem.rightBarButtonItem = nil
-                self.navigationItem.setHidesBackButton(true, animated: true)
+//                self.navigationItem.leftBarButtonItem = nil
+//                self.navigationItem.rightBarButtonItem = nil
+//                self.navigationItem.setHidesBackButton(true, animated: true)
+                self.navigationController?.navigationBar.isHidden = true
 
                 let height = view.frame.origin.y - keyboard.height + 80
 
@@ -217,9 +245,12 @@ extension MyProfileViewController {
             } else{
                 guard let keyboard = (notification.userInfo?[UIKeyboardFrameBeginUserInfoKey] as? NSValue)?.cgRectValue else {return}
 
-                self.navigationItem.leftBarButtonItem = nil
-                self.navigationItem.rightBarButtonItem = nil
-                self.navigationItem.setHidesBackButton(true, animated: true)
+//                self.navigationItem.leftBarButtonItem = nil
+//                //self.navigationItem.rightBarButtonItem = nil
+//                self.favButton = nil
+//                self.signOutButton = nil
+//                self.navigationItem.setHidesBackButton(true, animated: true)
+                self.navigationController?.navigationBar.isHidden = true
 
                 let height = view.frame.origin.y - keyboard.height + 80
 
@@ -237,8 +268,10 @@ extension MyProfileViewController {
             if #available(iOS 11.0, *){
                 guard let keyboard = (notification.userInfo?[UIKeyboardFrameBeginUserInfoKey] as? NSValue)?.cgRectValue else {return}
 
-                self.navigationItem.leftBarButtonItem = UIBarButtonItem(customView: backView)
-                self.navigationItem.rightBarButtonItem = UIBarButtonItem(customView: signOut)
+//                self.navigationItem.leftBarButtonItem = UIBarButtonItem(customView: backView)
+                //self.navigationItem.rightBarButtonItem = UIBarButtonItem(customView: signOut)
+                //self.navigationItem.rightBarButtonItems = [signOutButton!, favButton!]
+                self.navigationController?.navigationBar.isHidden = false
 
                 let height = view.frame.origin.y + keyboard.height - 80 //(view.frame.height) - keyboard.height
                 view.frame.origin.y = height
@@ -246,8 +279,10 @@ extension MyProfileViewController {
             } else {
                 guard let keyboard = (notification.userInfo?[UIKeyboardFrameBeginUserInfoKey] as? NSValue)?.cgRectValue else {return}
 
-                self.navigationItem.leftBarButtonItem = UIBarButtonItem(customView: backView)
-                self.navigationItem.rightBarButtonItem = UIBarButtonItem(customView: signOut)
+//                self.navigationItem.leftBarButtonItem = UIBarButtonItem(customView: backView)
+                //self.navigationItem.rightBarButtonItem = UIBarButtonItem(customView: signOut)
+                //self.navigationItem.rightBarButtonItems = [signOutButton!, favButton!]
+                self.navigationController?.navigationBar.isHidden = false
 
                 let height = view.frame.origin.y + keyboard.height - 80 //(view.frame.height) - keyboard.height
                 view.frame.origin.y = height
@@ -336,11 +371,11 @@ extension MyProfileViewController {
                 let json = try JSONSerialization.jsonObject(with: data!, options: []) as? NSDictionary
                 print(json ?? "Json")
 
-                DispatchQueue.main.async {
-                    let result: String = json!["result"] as! String
-                    UserDefaults.standard.set(result, forKey: "profileImage")
-                    UserDefaults.standard.synchronize()
-                }
+//                DispatchQueue.main.async {
+//                    let result: String = json!["result"] as! String
+//                    UserDefaults.standard.set(result, forKey: "profileImage")
+//                    UserDefaults.standard.synchronize()
+//                }
 
             }catch
             {
@@ -380,28 +415,26 @@ extension MyProfileViewController {
         return body
     }
 
-    func setValueToTextFields() {
-        if APIManager.sharedInstance.isKeyPresentInUserDefaults(key: "fname") {
-            self.firstName.text = UserDefaults.standard.value(forKey: "fname") as? String
-            self.lastName.text = UserDefaults.standard.value(forKey: "lname") as? String
-            self.streetTextfield.text = UserDefaults.standard.value(forKey: "street") as? String
-            self.cityTextfield.text = UserDefaults.standard.value(forKey: "city") as? String
-            self.stateTextField.text = UserDefaults.standard.value(forKey: "state") as? String
-            self.countryTextfield.text = UserDefaults.standard.value(forKey: "country") as? String
-            self.zipTextfield.text = UserDefaults.standard.value(forKey: "zip") as? String
-            let link = UserDefaults.standard.value(forKey: "profileImage") as? String
-            if let url = URL(string: link!) {
-                self.profileImage.sd_setImage(with: url, placeholderImage: #imageLiteral(resourceName: "drawerImage"))
-            }
-            //self.lastName.text = UserDefaults.standard.value(forKey: "lname") as! String
-        }
-    }
+//    func setValueToTextFields() {
+//            self.firstName.text = UserDefaults.standard.value(forKey: "fname") as? String
+//            self.lastName.text = UserDefaults.standard.value(forKey: "lname") as? String
+//            self.streetTextfield.text = UserDefaults.standard.value(forKey: "street") as? String
+//            self.cityTextfield.text = UserDefaults.standard.value(forKey: "city") as? String
+//            self.stateTextField.text = UserDefaults.standard.value(forKey: "state") as? String
+//            self.countryTextfield.text = UserDefaults.standard.value(forKey: "country") as? String
+//            self.zipTextfield.text = UserDefaults.standard.value(forKey: "zip") as? String
+//            let link = UserDefaults.standard.value(forKey: "profileImage") as? String
+//            if let url = URL(string: link!) {
+//                self.profileImage.sd_setImage(with: url, placeholderImage: #imageLiteral(resourceName: "placeholder"))
+//            }
+//            //self.lastName.text = UserDefaults.standard.value(forKey: "lname") as! String
+//    }
 
     func generateBoundaryString() -> String {
         return "Boundary-\(NSUUID().uuidString)"
     }
 
-    /*func getUserData() {
+    func getUserData() {
         DispatchQueue.main.async {
             self.loadingIndicator.center = self.view.center
             self.loadingIndicator.alpha = 0.9
@@ -420,32 +453,44 @@ extension MyProfileViewController {
                 do {
                     guard let data = data else {return}
                     let parsedData = try! JSONSerialization.jsonObject(with: data, options: JSONSerialization.ReadingOptions.allowFragments) as! NSDictionary
-                    //                    let result: NSDictionary = parsedData["result"] as! NSDictionary
-                    //                    let firstName: String = result["first_name"] as! String
-                    //                    let lastName: String = result["last_name"] as! String
-                    //                    let gender: String = result["gender"] as! String
-                    //                    "dob"
-                    //                    "street"
-                    //                    "city"
-                    //                    "state"
-                    //                    "country"
-                    //                    "zip"
-                    //                    "time_zone": "ASIA/COLOMBO",
-                    //                    "img_url"
+                    let errorCode: String = parsedData["errorCode"] as! String
+                    if errorCode == "1" {
+                        let result: NSDictionary = parsedData["result"] as! NSDictionary
+                        let firstName: String = result["first_name"] as! String
+                        let lastName: String = result["last_name"] as! String
+                        let genderJSON: String = result["gender"] as! String
+                        let _: String = result["dob"] as! String
+                        let street: String = result["street"] as! String
+                        let city: String = result["city"] as! String
+                        let state: String = result["state"] as! String
+                        let country: String = result["country"] as! String
+                        let zip: String = result["zip"] as! String
+                        let _: String = result["time_zone"] as! String
+                        let imageURL: String = result["img_url"] as! String
 
-                    DispatchQueue.main.async {
-                        self.firstName.text = firstName
-                        self.lastName.text = lastName
-                        if
-                            self.gender.selectedSegmentIndex = 0
-                        self.loadingIndicator.alpha = 0
+                        DispatchQueue.main.async {
+                            self.firstName.text = firstName
+                            self.lastName.text = lastName
+                            if genderJSON == "Male" {
+                                self.gender.selectedSegmentIndex = 0
+                            } else {
+                                self.gender.selectedSegmentIndex = 1
+                            }
+                            self.streetTextfield.text = street
+                            self.cityTextfield.text = city
+                            self.stateTextField.text = state
+                            self.countryTextfield.text = country
+                            self.zipTextfield.text = zip
+                            self.profileImage.sd_setImage(with: URL(string: imageURL), placeholderImage: #imageLiteral(resourceName: "user-placeholder"))
+                            self.loadingIndicator.alpha = 0
+                        }
                     }
                 } catch {
                     print("catch block", error)
                 }
             }
             }.resume()
-    }*/
+    }
 
 
 

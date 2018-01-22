@@ -28,13 +28,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             setupTabBarController()
         }
 
-//        let third = LoginViewController(nibName: nil, bundle: nil)
-//        let nav3 = UINavigationController()
-//        nav3.viewControllers = [third]
-//
-//        self.window!.rootViewController = nav3;
-//        self.window?.makeKeyAndVisible();
-
         ReachabilityManager.shared.startMonitoring()
         
         //Google Analytics
