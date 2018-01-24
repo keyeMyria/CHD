@@ -62,7 +62,7 @@ class FirstViewController: UITableViewController {
         
         window = (appDelegate.window)!
 
-        snackBar.frame.origin.y = window.frame.height + 50
+        snackBar.frame.origin.y = window.frame.height
         snackBar.frame.origin.x = 0
         window.addSubview(snackBar)
 

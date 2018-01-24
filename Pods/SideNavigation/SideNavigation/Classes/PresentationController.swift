@@ -32,9 +32,9 @@ class PresentationController: UIPresentationController {
 
     override func size(forChildContentContainer container: UIContentContainer, withParentContainerSize parentSize: CGSize) -> CGSize {
             if UIDevice().userInterfaceIdiom == .pad {
-                return CGSize(width: 300, height: parentSize.height)
+                return CGSize(width: 220, height: parentSize.height)
             } else {
-                return CGSize(width: parentSize.width - 50, height: parentSize.height)
+                return CGSize(width: 220, height: parentSize.height) //parentSize.width - 50
             }
         //return CGSize(width: parentSize.width*(2.0/3.0), height: parentSize.height)
     }

@@ -340,7 +340,7 @@ extension ChooseFavViewController: UICollectionViewDataSource, UICollectionViewD
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "cell", for: indexPath) as! ImageCell
         let post = array[indexPath.row]
-        cell.imageView.sd_setImage(with: URL(string: post.imageURL!), placeholderImage: #imageLiteral(resourceName: "userPlaceholder")) //UIImage.init(named: "eye")
+        cell.imageView.sd_setImage(with: URL(string: post.imageURL!), placeholderImage: #imageLiteral(resourceName: "logo")) //UIImage.init(named: "eye")
         cell.label.text = post.title!
 
         if favArray.contains(post.category!) {

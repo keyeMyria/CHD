@@ -16,7 +16,9 @@ class LeftViewController: UIViewController {
     var didselected: ((IndexPath, Int, Int) -> ())?
 
     var socialMediaView: UIStackView!
-    
+    var socialMediaViews: UIView!
+    let anotherView = UIView()
+    var isExpanded: Bool = false
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = .white
@@ -36,37 +38,44 @@ class LeftViewController: UIViewController {
         }
         
         if UIDevice().userInterfaceIdiom == .pad {
-            tableView.frame = CGRect(x: 0, y: 0, width: 300, height: view.frame.height) //self.view.frame.width - 400
+            tableView.frame = CGRect(x: 0, y: 0, width: 220, height: view.frame.height)
         } else {
-            tableView.frame = CGRect(x: 0, y: 0, width: self.view.frame.width - 50, height: view.frame.height)
+            tableView.frame = CGRect(x: 0, y: 0, width: 220, height: view.frame.height) //self.view.frame.width - 50
         }
         let headerView = UIView()
         if UIDevice().userInterfaceIdiom == .pad {
-            headerView.frame = CGRect(origin: .zero, size: CGSize(width: 300 , height: 180)) //self.view.frame.width - 400
+            headerView.frame = CGRect(origin: .zero, size: CGSize(width: 220 , height: 150))
         } else {
-            headerView.frame = CGRect(origin: .zero, size: CGSize(width: view.frame.width - 50, height: 180))
+            headerView.frame = CGRect(origin: .zero, size: CGSize(width: 220, height: 150)) //view.frame.width - 50
         }
-        headerView.backgroundColor = .blue
+        headerView.backgroundColor = .white
         
-        let logoView = UIImageView(image: #imageLiteral(resourceName: "drawerImage"))
-        logoView.contentMode = .scaleAspectFill
-        logoView.frame = headerView.frame
+        let logoView = UIImageView(image: #imageLiteral(resourceName: "logo"))
+        logoView.frame.size = CGSize(width: 100, height: 100)
+        logoView.contentMode = .scaleAspectFit
+        logoView.frame.origin.y = 10
+        logoView.frame.origin.x = 60
         headerView.addSubview(logoView)
 
+        let subTitleView = UIImageView(image: #imageLiteral(resourceName: "logo-title-tag"))
+        subTitleView.frame.size = CGSize(width: 220, height: 30)
+        subTitleView.contentMode = .scaleAspectFit
+        subTitleView.frame.origin.y = 110
+        subTitleView.frame.origin.x = 0
+        headerView.addSubview(subTitleView)
+        
+//        let nameLabel = UILabel.init(frame: CGRect.init(x: 10, y: Int(headerView.frame.height - 40), width: Int(headerView.frame.size.width-20), height: 30))
+//        nameLabel.text = "Consumer Health Digest"
+//        nameLabel.textColor = UIColor.white
+//        nameLabel.font = UIFont.boldSystemFont(ofSize: 20)
+//        headerView.addSubview(nameLabel)
+//
+//        let tagLabel = UILabel.init(frame: CGRect.init(x: 10, y: Int(headerView.frame.height - 15) , width: Int(headerView.frame.size.width-20), height: 15))
+//        tagLabel.text = "Your Trusted Source for Good Health"
+//        tagLabel.textColor = UIColor.white
+//        tagLabel.font = UIFont.italicSystemFont(ofSize: 12)
+//        headerView.addSubview(tagLabel)
 
-        
-        let nameLabel = UILabel.init(frame: CGRect.init(x: 10, y: Int(headerView.frame.height - 40), width: Int(headerView.frame.size.width-20), height: 30))
-        nameLabel.text = "Consumer Health Digest"
-        nameLabel.textColor = UIColor.white
-        nameLabel.font = UIFont.boldSystemFont(ofSize: 20)
-        headerView.addSubview(nameLabel)
-        
-        let tagLabel = UILabel.init(frame: CGRect.init(x: 10, y: Int(headerView.frame.height - 15) , width: Int(headerView.frame.size.width-20), height: 15))
-        tagLabel.text = "Your Trusted Source for Good Health"
-        tagLabel.textColor = UIColor.white
-        tagLabel.font = UIFont.italicSystemFont(ofSize: 12)
-        headerView.addSubview(tagLabel)
-        
         tableView.tableHeaderView = headerView
         tableView.separatorStyle = .none
         tableView.bounces = false
@@ -117,7 +126,69 @@ class LeftViewController: UIViewController {
 
         socialMediaView = UIStackView(arrangedSubviews: [GPlus, fb, twitter,youTube,LI,insta, pinterest])
         socialMediaView.distribution = .fillEqually
-        socialMediaView.frame = CGRect(x: 0, y: 0, width: tableView.frame.width, height: 35)
+        socialMediaView.frame = CGRect(x: 0, y: 0, width: tableView.frame.width, height: 30)
+    }
+
+    func setupBottomViews() {
+        let insta = UIButton()
+        insta.backgroundColor = .white
+        insta.setImage(#imageLiteral(resourceName: "icons8-instagram_new"), for: .normal)
+        insta.tag = 0
+        insta.addTarget(self, action: #selector(openSocialMediaView(_:)), for: .touchUpInside)
+        let fb = UIButton()
+        fb.backgroundColor = .white
+        fb.setImage(#imageLiteral(resourceName: "icons8-facebook"), for: .normal)
+        fb.tag = 1
+        fb.addTarget(self, action: #selector(openSocialMediaView(_:)), for: .touchUpInside)
+        let LI = UIButton()
+        LI.backgroundColor = .white
+        LI.setImage(#imageLiteral(resourceName: "icons8-linkedin"), for: .normal)
+        LI.tag = 2
+        LI.addTarget(self, action: #selector(openSocialMediaView(_:)), for: .touchUpInside)
+        let GPlus = UIButton()
+        GPlus.backgroundColor = .white
+        GPlus.setImage(#imageLiteral(resourceName: "icons8-google_plus_squared"), for: .normal)
+        GPlus.tag = 3
+        GPlus.addTarget(self, action: #selector(openSocialMediaView(_:)), for: .touchUpInside)
+        let twitter = UIButton()
+        twitter.backgroundColor = .white
+        twitter.setImage(#imageLiteral(resourceName: "icons8-twitter"), for: .normal)
+        twitter.tag = 4
+        twitter.addTarget(self, action: #selector(openSocialMediaView(_:)), for: .touchUpInside)
+        let pinterest = UIButton()
+        pinterest.backgroundColor = .white
+        pinterest.setImage(#imageLiteral(resourceName: "icons8-pinterest"), for: .normal)
+        pinterest.tag = 5
+        pinterest.addTarget(self, action: #selector(openSocialMediaView(_:)), for: .touchUpInside)
+        let youTube = UIButton()
+        youTube.backgroundColor = .white
+        youTube.setImage(#imageLiteral(resourceName: "icons8-youtube"), for: .normal)
+        youTube.tag = 6
+        youTube.addTarget(self, action: #selector(openSocialMediaView(_:)), for: .touchUpInside)
+
+        let seeMore = UIButton()
+        seeMore.backgroundColor = .white
+        seeMore.setImage(#imageLiteral(resourceName: "icons8-plus-100"), for: .normal)
+        seeMore.addTarget(self, action: #selector(expandSocialMediaView), for: .touchUpInside)
+
+//        socialMediaView = UIStackView(arrangedSubviews: [GPlus, seeMore])
+//        socialMediaView.backgroundColor = .blue
+//        socialMediaView.distribution = .fillProportionally
+//        socialMediaView.frame = CGRect(x: 0, y: 0, width: 10, height: 35)
+
+        socialMediaViews = UIView()
+        socialMediaViews.backgroundColor = .blue
+        socialMediaViews.frame = CGRect(x: 0, y: 0, width: 50, height: 35)
+        socialMediaViews.addSubview(anotherView)
+
+        anotherView.backgroundColor = .red
+        anotherView.frame = CGRect(x: 0, y: 0, width: 50, height: 35)
+        anotherView.addSubview(GPlus)
+        GPlus.frame = CGRect(x: 0, y: 0, width: 25, height: 25)
+        anotherView.addSubview(seeMore)
+        seeMore.frame = CGRect(x: 25, y: 0, width: 25, height: 25)
+
+
     }
     
     @objc func openSocialMediaView(_ sender: UIButton) {
@@ -125,8 +196,20 @@ class LeftViewController: UIViewController {
        
         self.didselected?(IndexPath.init(row: -1, section: -1), -1,sender.tag)
         self.dismiss(animated: true, completion: nil)
-        
-       
+    }
+
+    @objc func expandSocialMediaView() {
+        if !isExpanded {
+            UIView.animate(withDuration: 0.5) {
+                self.isExpanded = true
+                self.anotherView.frame = CGRect(x: 0, y: 0, width: 300, height: 35)
+            }
+        } else {
+            UIView.animate(withDuration: 0.5) {
+                self.isExpanded = false
+                self.anotherView.frame = CGRect(x: 0, y: 0, width: 50, height: 35)
+            }
+        }
     }
 }
 
@@ -144,7 +227,7 @@ extension LeftViewController: UITableViewDelegate, UITableViewDataSource {
         if section == 0 {
             return 0.0
         } else {
-            return 35.0
+            return 30.0
         }
     }
     
@@ -170,7 +253,7 @@ extension LeftViewController: UITableViewDelegate, UITableViewDataSource {
             return socialMediaView
         }
     }
-    
+
     func numberOfSections(in tableView: UITableView) -> Int {
         return 2
     }

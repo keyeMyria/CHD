@@ -106,8 +106,10 @@ class MyProfileViewController: BaseViewController,UIImagePickerControllerDelegat
         self.navigationItem.rightBarButtonItems = [signOutButton!, favButton!]
         addingObserverOnView()
 
-        snackBar.frame.origin.y = window.frame.height + 50
+        window = appDelegate.window!
+        snackBar.frame.origin.y = window.frame.height
         snackBar.frame.origin.x = 0
+        snackBar.frame.size.width = window.frame.width
         window.addSubview(snackBar)
 
 
@@ -187,20 +189,19 @@ class MyProfileViewController: BaseViewController,UIImagePickerControllerDelegat
                 self.view.addSubview(self.loadingIndicator)
             }
 
-            sendUserData(requestURL: ACCOUNT_SETTING_URL) { [weak self] (dict) in
-                if let strongSelf = self {
+            sendUserData(requestURL: ACCOUNT_SETTING_URL) { (dict) in
+                //if let strongSelf = self {
                     print(dict["errorCode"] as! String)
                     DispatchQueue.main.async {
-                        strongSelf.loadingIndicator.alpha = 0
+                        self.loadingIndicator.alpha = 0
                         UIView.animate(withDuration: 0.5, animations: {
-                            self?.snackBar.frame.origin.y = (self?.window.frame.height)! - 50
-
-                        })
+                            self.snackBar.frame.origin.y = (self.window.frame.height) - 50
+                        }, completion: nil)
                         UIView.animate(withDuration: 0.5, delay: 2.0, options: UIViewAnimationOptions(rawValue: 0), animations: {
-                            self?.snackBar.frame.origin.y = (self?.window.frame.height)! + 50
+                            self.snackBar.frame.origin.y = (self.window.frame.height) + 50
                         }, completion: nil)
                     }
-                }
+                //}
             }
         } else {
             self.displayAlertView("All fields are compulsory", message: "Do not leave any field empty", handler: nil)
