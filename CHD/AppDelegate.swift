@@ -18,7 +18,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         // Override point for customization after application launch.
         self.window = UIWindow(frame: UIScreen.main.bounds)
 
-        // remove comments after all testing is done
         if !UserDefaults.standard.bool(forKey: "isLoggedInSkipped") {
             setupLoginNavigationController()
             let settings = UIUserNotificationSettings(types: [.alert, .badge, .sound], categories: nil)
@@ -34,6 +33,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         
         guard let gai = GAI.sharedInstance() else {
             assert(false, "Google Analytics not configured correctly")
+            return false
         }
         gai.tracker(withTrackingId: "UA-111629190-1") // UA-111629190-1  company Account    //UA-111609419-1 my account
         // Optional: automatically report uncaught exceptions.

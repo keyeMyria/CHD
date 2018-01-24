@@ -7,13 +7,19 @@
 //
 
 import UIKit
+import SDWebImage
+import ReachabilitySwift
 
 struct Model {
     var title: String?
     var category: Int?
+    var imageURL: String?
 }
 
-class ChooseFavViewController: UIViewController, UICollectionViewDelegateFlowLayout {
+var removedFav: Bool = false
+var isSkipped: Bool = false
+
+class ChooseFavViewController: BaseViewController, UICollectionViewDelegateFlowLayout {
     
     var gridCollectionView: UICollectionView!
     var gridLayout: GridLayout!
@@ -30,6 +36,10 @@ class ChooseFavViewController: UIViewController, UICollectionViewDelegateFlowLay
     var APIReference = "health_center"
     var pageTitle = "Welcome to CHD"
     var subTitle = "Follow Topics"
+
+    var isFromMyProfile: Bool = false
+
+
 
     private lazy var loadingIndicator: UIView = {
         let view = UIView()
@@ -49,12 +59,18 @@ class ChooseFavViewController: UIViewController, UICollectionViewDelegateFlowLay
         return view
     }()
 
+    var favArrayCount: Bool?
+
     let appDelegate = UIApplication.shared.delegate as! AppDelegate
 
     let userID = UserDefaults.standard.value(forKey: "userID") as! String
 
     override func viewDidLoad() {
         super.viewDidLoad()
+
+        favArrayCount = {
+            return favArray.count != 0
+        }()
 
         self.title = pageTitle
         self.navigationItem.titleView = setTitle(title: pageTitle, subtitle: subTitle)
@@ -86,11 +102,6 @@ class ChooseFavViewController: UIViewController, UICollectionViewDelegateFlowLay
         fullImageView.alpha = 0
         self.view.addSubview(fullImageView)
 
-        let window = appDelegate.window
-        window?.addSubview(loadingIndicator)
-        loadingIndicator.center = (window?.center)!
-        loadingIndicator.alpha = 0.9
-
         apiCallingFunction()
         if userID.isEmpty {
             if APIManager.sharedInstance.isKeyPresentInUserDefaults(key: "category") {
@@ -107,7 +118,17 @@ class ChooseFavViewController: UIViewController, UICollectionViewDelegateFlowLay
     }
 
     fileprivate func apiCallingFunction() {
-        APIManager.sharedInstance.getReviewData(pageCount: pageCount, reference: APIReference) { (dict) in
+        let reachability = Reachability()
+        let status = reachability?.currentReachabilityStatus
+        if status == .notReachable {
+            print("No Internet")
+        } else {
+            let window = appDelegate.window
+            window?.addSubview(loadingIndicator)
+            loadingIndicator.center = (window?.center)!
+            loadingIndicator.alpha = 0.9
+
+        APIManager.sharedInstance.getReviewData(pageCount: pageCount, reference: APIReference) { [weak self] (dict) in
             guard let dictionary = dict else {return}
             let data = dictionary["data"] as! NSDictionary
 
@@ -115,38 +136,62 @@ class ChooseFavViewController: UIViewController, UICollectionViewDelegateFlowLay
             let menHealth = data["Mens_Health"] as! [NSDictionary]
             let womenHealth = data["Women_Health"] as! [NSDictionary]
             let generalHealth = data["General_Health"] as! [NSDictionary]
-            for i in beautySkinCare {
-                let pageTitle = i["post_title"] as! String
-                let category = i["cat_id"] as! Int
-                print(pageTitle)
 
-                self.array.append(Model(title: pageTitle, category: category))
-            }
-            for i in menHealth {
-                let pageTitle = i["post_title"] as! String
-                let category = i["cat_id"] as! Int
-                print(pageTitle)
+            if let strongSelf = self {
+                for i in beautySkinCare {
+                    let pageTitle = i["post_title"] as! String
+                    let category = i["cat_id"] as! Int
+                    let imageurl = i["image_url"] as! String
+                    print(pageTitle)
 
-                self.array.append(Model(title: pageTitle, category: category))
-            }
-            for i in womenHealth {
-                let pageTitle = i["post_title"] as! String
-                let category = i["cat_id"] as! Int
-                print(pageTitle)
+                    strongSelf.array.append(Model(title: pageTitle, category: category, imageURL: imageurl))
+                }
+                for i in menHealth {
+                    let pageTitle = i["post_title"] as! String
+                    let category = i["cat_id"] as! Int
+                    let imageurl = i["image_url"] as! String
+                    print(pageTitle)
 
-                self.array.append(Model(title: pageTitle, category: category))
-            }
-            for i in generalHealth {
-                let pageTitle = i["post_title"] as! String
-                let category = i["cat_id"] as! Int
-                print(pageTitle)
+                    strongSelf.array.append(Model(title: pageTitle, category: category, imageURL: imageurl))
+                }
+                for i in womenHealth {
+                    let pageTitle = i["post_title"] as! String
+                    let category = i["cat_id"] as! Int
+                    let imageurl = i["image_url"] as! String
+                    print(pageTitle)
 
-                self.array.append(Model(title: pageTitle, category: category))
+                    strongSelf.array.append(Model(title: pageTitle, category: category, imageURL: imageurl))
+                }
+                for i in generalHealth {
+                    let pageTitle = i["post_title"] as! String
+                    let category = i["cat_id"] as! Int
+                    let imageurl = i["image_url"] as! String
+                    print(pageTitle)
+
+                    strongSelf.array.append(Model(title: pageTitle, category: category, imageURL: imageurl))
+                }
+                DispatchQueue.main.async {
+                    strongSelf.gridCollectionView.reloadData()
+                    strongSelf.loadingIndicator.alpha = 0
+                    if isSkipped && (strongSelf.favArray.count != 0) {
+                        let alert = UIAlertController(title: "Do you want to remove all topics?", message: "Tapping on \"Yes\" will remove all favourite topics.", preferredStyle: .alert)
+                        let yesAction = UIAlertAction(title: "Yes", style: UIAlertActionStyle.default) { (_) in
+                            print("Yes")
+                            //DispatchQueue.main.async {
+                                strongSelf.favArray.removeAll()
+                                strongSelf.gridCollectionView.reloadData()
+                            //}
+                        }
+                        let noAction = UIAlertAction(title: "No", style: UIAlertActionStyle.default) { (_) in
+                            print("No")
+                        }
+                        alert.addAction(yesAction)
+                        alert.addAction(noAction)
+                        strongSelf.present(alert, animated: true, completion: nil)
+                    }
+                }
             }
-            DispatchQueue.main.async {
-                self.gridCollectionView.reloadData()
-                self.loadingIndicator.alpha = 0
-            }
+        }
         }
     }
 
@@ -168,8 +213,32 @@ class ChooseFavViewController: UIViewController, UICollectionViewDelegateFlowLay
 
         navigationItem.rightBarButtonItem = UIBarButtonItem(customView: nextView)
 
+        let backView = UIView()
+        backView.frame = CGRect(x: 0, y: 0, width: 60, height: 60)
+
+        let backButton = UIButton()
+        backButton.setImage(#imageLiteral(resourceName: "backArrow"), for: .normal)
+        backButton.frame = CGRect(x: 0, y: 20, width: 30, height: 30)
+        backButton.addTarget(self, action: #selector(popViewController), for: .touchUpInside)
+        backView.addSubview(backButton)
+
+        navigationItem.leftBarButtonItem = UIBarButtonItem(customView: backView)
+
         self.navigationController?.navigationBar.isHidden = false
-        self.navigationItem.setHidesBackButton(true, animated: true)
+        if !isFromMyProfile {
+            self.navigationItem.setHidesBackButton(true, animated: true)
+            navigationItem.leftBarButtonItem = nil
+        } else {
+            navigationItem.leftBarButtonItem = UIBarButtonItem(customView: backView)
+            self.navigationItem.setHidesBackButton(false, animated: true)
+        }
+
+    }
+
+    @objc func popViewController() {
+        self.loadingIndicator.removeFromSuperview()
+        self.navigationController?.popViewController(animated: true)
+
     }
 
     func getCategories() {
@@ -182,22 +251,23 @@ class ChooseFavViewController: UIViewController, UICollectionViewDelegateFlowLay
 //            print(result.result?.category_id)
 //
 //        }
-        HTTPAPICalling.sharedInstance.fetchAPIByRegularConvention(requestMethod: GET, requestURL: link, requestParaDic: nil) { (dict) in
+        HTTPAPICalling.sharedInstance.fetchAPIByRegularConvention(requestMethod: GET, requestURL: link, requestParaDic: nil) { [weak self] (dict) in
             let errorCode = dict!["errorCode"] as! String
             if errorCode == "1" {
                 let result: [NSDictionary] = dict!["result"] as! [NSDictionary]
+                if let strongSelf = self {
+                    for category in result {
+                        let cate = category["category_id"] as! String
+                        strongSelf.favArray.append(Int(cate)!)
+                        print(strongSelf.favArray)
+                        //need to filter array so that no two same categories will add
+                        //self.favArray = self.favArray.filter{$0 != self.favArray[index]}
+                        DispatchQueue.main.async {
+                            strongSelf.gridCollectionView.reloadData()
+                            //self.loadingIndicator.alpha = 0
+                        }
 
-                for category in result {
-                    let cate = category["category_id"] as! String
-                    self.favArray.append(Int(cate)!)
-                    print(self.favArray)
-                    //need to filter array so that no two same categories will add
-                    //self.favArray = self.favArray.filter{$0 != self.favArray[index]}
-                    DispatchQueue.main.async {
-                        self.gridCollectionView.reloadData()
-                        self.loadingIndicator.alpha = 0
                     }
-
                 }
             }
         }
@@ -205,6 +275,10 @@ class ChooseFavViewController: UIViewController, UICollectionViewDelegateFlowLay
 
     @objc func doneButtonDidClicked() {
         print("done")
+        isSkipped = false
+        UserDefaults.standard.set(true, forKey: "isFromChooseCategory")
+        UserDefaults.standard.set(true, forKey: "showSnackBar")
+        UserDefaults.standard.synchronize()
 
         loadingIndicator.alpha = 0.9
         //let userID: String = UserDefaults.standard.value(forKey: "userID") as! String
@@ -266,7 +340,7 @@ extension ChooseFavViewController: UICollectionViewDataSource, UICollectionViewD
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "cell", for: indexPath) as! ImageCell
         let post = array[indexPath.row]
-        cell.imageView.image = UIImage.init(named: "eye")
+        cell.imageView.sd_setImage(with: URL(string: post.imageURL!), placeholderImage: #imageLiteral(resourceName: "userPlaceholder")) //UIImage.init(named: "eye")
         cell.label.text = post.title!
 
         if favArray.contains(post.category!) {

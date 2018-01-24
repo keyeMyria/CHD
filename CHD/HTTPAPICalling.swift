@@ -34,7 +34,10 @@ struct PostData: Decodable {
     let category_id: Int?
     let post_description: String?
     let post_date: String?
+    let errorMessage: String?
 }
+
+//var failedToLoad: ((String) -> ())?
 
 class HTTPAPICalling{
 
@@ -51,7 +54,6 @@ class HTTPAPICalling{
         var request = URLRequest(url: url!)
         request.httpMethod = requestMethod
         request.addValue("application/json", forHTTPHeaderField: "Content-Type")
-        
         if let requestDict = requestParaDic {
             do{
             let jsonData = try JSONSerialization.data(withJSONObject: requestDict, options: .prettyPrinted)
@@ -62,7 +64,9 @@ class HTTPAPICalling{
         }
         URLSession.shared.dataTask(with:request) { (data, _, error) in
             if error != nil {
-                self.failuareDialog(title: "No internet connection", message: "Please check your internet connection and try again")
+              //  completion(<#T##JSONResult?#>)
+                //self.failuareDialog(title: "No internet connection", message: "Please check your internet connection and try again")
+                print("Error**************************************************************")
             } else {
                 do {
                     guard let data = data else {return}
@@ -71,7 +75,7 @@ class HTTPAPICalling{
                     completion(parsedData)
                 }
                 catch {
-                   self.failuareDialog(title: "Something went wrong", message: "It's not you, it's us. Sorry for inconvenience")
+                   //self.failuareDialog(title: "Something went wrong", message: "It's not you, it's us. Sorry for inconvenience")
                 }
             }
             
@@ -94,7 +98,8 @@ class HTTPAPICalling{
         }
         URLSession.shared.dataTask(with:request) { (data, _, error) in
             if error != nil {
-                self.failuareDialog(title: "No internet connection", message: "Please check your internet connection and try again")
+                //self.failuareDialog(title: "No internet connection", message: "Please check your internet connection and try again")
+                print("Error**************************************************************")
             } else {
                 do {
                     guard let data = data else {return}
@@ -102,7 +107,7 @@ class HTTPAPICalling{
                     completion(parsedData)
                 }
                 catch {
-                    self.failuareDialog(title: "Something went wrong", message: "It's not you, it's us. Sorry for inconvenience")
+                    //self.failuareDialog(title: "Something went wrong", message: "It's not you, it's us. Sorry for inconvenience")
                 }
             }
             

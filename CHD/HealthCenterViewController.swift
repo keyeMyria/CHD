@@ -29,6 +29,7 @@ class HealthCenterViewController: UITableViewController {
         tracker.send(builder.build() as [NSObject : AnyObject])
    
         view.addSubview(activityIndicator)
+        activityIndicator.color = .black
         activityIndicator.center = view.center
         activityIndicator.startAnimating()
         

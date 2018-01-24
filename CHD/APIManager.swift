@@ -14,7 +14,6 @@ class APIManager {
     var mutablePageCount = 1
     var delegate: (() -> ())?
     var shouldShowLoadingCell = true
-    var reloadTableView = true
     
     class var sharedInstance :APIManager {
         struct Singleton {
@@ -150,24 +149,20 @@ class APIManager {
     
     func numberOfRowsInSection() -> Int{
         //return array.count
+        if UserDefaults.standard.bool(forKey: "isFromChooseCategory") {
+            UserDefaults.standard.set(false, forKey: "isFromChooseCategory")
+            self.array.removeAll()
+            return 0
+        }
         let count = array.count
         return shouldShowLoadingCell ? count + 1 : count
     }
     
     func cellForRow(at indexPath: IndexPath, tableView: UITableView) -> PostData? {
-//        if mutablePageCount == 1 && reloadTableView {
-//            getResentPostsData(pageCount: mutablePageCount, completion: {
-//                DispatchQueue.main.async {
-//                    tableView.reloadData()
-//                    self.reloadTableView = false
-//                }
-//            })
-//        } else {
             if indexPath.row == array.count - 2 {
                 getResentPostsData(pageCount: mutablePageCount) {
                 }
             }
-//        }
         return array[indexPath.row] as PostData
     }
     

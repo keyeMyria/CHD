@@ -130,6 +130,11 @@ class SecondViewController: UITableViewController {
                             reviewVC.APIReference = "review"
                             reviewVC.hidesBottomBarWhenPushed = true
                             strongSelf.navigationController?.pushViewController(reviewVC, animated: true)
+                        case 7:
+                            print("Favourites")
+                            let favVC = ChooseFavViewController()
+                            favVC.hidesBottomBarWhenPushed = true
+                            strongSelf.navigationController?.pushViewController(favVC, animated: true)
                         default:
                             print("bello")
                         }

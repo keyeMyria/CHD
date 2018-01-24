@@ -7,8 +7,9 @@
 //
 
 import UIKit
+import ReachabilitySwift
 
-class MyProfileViewController: UIViewController,UIImagePickerControllerDelegate, UINavigationControllerDelegate  {
+class MyProfileViewController: BaseViewController,UIImagePickerControllerDelegate, UINavigationControllerDelegate  {
 
     @IBOutlet weak var profileImage: UIImageView!
     @IBOutlet weak var firstName: UITextField!
@@ -25,8 +26,6 @@ class MyProfileViewController: UIViewController,UIImagePickerControllerDelegate,
     var keyboardIsShown = false
     let backButton = UIButton()
     let backView = UIView()
-    //let signOut = UIButton()
-    //let favoutiteButton = UIButton()
     var signOutButton: UIBarButtonItem?
     var favButton: UIBarButtonItem?
     var isFromGallary: Bool = false
@@ -49,15 +48,39 @@ class MyProfileViewController: UIViewController,UIImagePickerControllerDelegate,
         return view
     }()
 
+    private lazy var snackBar: UIView = {
+        let bar = UIView()
+        bar.frame.size = CGSize(width: view.frame.width, height: 50)
+        bar.backgroundColor = .black
+
+        let tick = UIImageView()
+        tick.image =  #imageLiteral(resourceName: "icons8-ok_filled")
+        tick.frame = CGRect(x: 20, y: 16, width: 20, height: 20)
+        bar.addSubview(tick)
+
+        let label = UILabel()
+        label.text = "Profile saved!"
+        label.textColor = .white
+        label.font = UIFont.systemFont(ofSize: 13)
+        label.frame = CGRect(x: 50, y: 16, width: 250, height: 20)
+        bar.addSubview(label)
+        return bar
+    }()
+
+    let appDelegate = UIApplication.shared.delegate as! AppDelegate
+    var window = UIWindow()
+
     override func viewDidLoad() {
         super.viewDidLoad()
         self.view.backgroundColor = .white
 
-        let image = UIImage()
-        self.navigationController?.navigationBar.setBackgroundImage(image, for: UIBarMetrics.default)
-        self.navigationController?.navigationBar.shadowImage = image
-        self.navigationController?.navigationBar.isTranslucent = true
-        self.navigationController?.view.backgroundColor = UIColor.clear
+        firstName.delegate = self
+        lastName.delegate = self
+        streetTextfield.delegate = self
+        cityTextfield.delegate = self
+        stateTextField.delegate = self
+        countryTextfield.delegate = self
+        zipTextfield.delegate = self
 
         backView.frame = CGRect(x: 0, y: 0, width: 60, height: 60)
 
@@ -79,23 +102,28 @@ class MyProfileViewController: UIViewController,UIImagePickerControllerDelegate,
         signOut.frame = CGRect(x: 0, y: 0, width: 30, height: 30)
         signOut.addTarget(self, action: #selector(signOutButtonDidClicked), for: .touchUpInside)
         signOutButton = UIBarButtonItem(customView: signOut)
-       // self.navigationItem.rightBarButtonItem = UIBarButtonItem(customView: signOut)
 
-        self.navigationItem.rightBarButtonItems = [signOutButton!, favButton!]  // = UIBarButtonItem(customView: signOut)
+        self.navigationItem.rightBarButtonItems = [signOutButton!, favButton!]
         addingObserverOnView()
+
+        snackBar.frame.origin.y = window.frame.height + 50
+        snackBar.frame.origin.x = 0
+        window.addSubview(snackBar)
+
+
     }
 
+
+
     override func viewWillAppear(_ animated: Bool) {
-//        if APIManager.sharedInstance.isKeyPresentInUserDefaults(key: "userID") {
-//            let fname = UserDefaults.standard.value(forKey: "fname") as! String //""
-//            if fname.isEmpty {
-//                getUserData()
-//            } else {
-//                setValueToTextFields()
-//            }
-//        } else {
-//            getUserData()
-//        }
+        let image = UIImage()
+        self.navigationController?.navigationBar.setBackgroundImage(image, for: UIBarMetrics.default)
+        self.navigationController?.navigationBar.shadowImage = image
+        self.navigationController?.navigationBar.isTranslucent = true
+        self.navigationController?.view.backgroundColor = UIColor.clear
+
+
+
         if !isFromGallary {
             getUserData()
         }
@@ -103,6 +131,7 @@ class MyProfileViewController: UIViewController,UIImagePickerControllerDelegate,
 
     @objc func favButtonDidClicked() {
         let vc = ChooseFavViewController()
+        vc.isFromMyProfile = true
         self.navigationController?.pushViewController(vc, animated: true)
     }
 
@@ -129,10 +158,6 @@ class MyProfileViewController: UIViewController,UIImagePickerControllerDelegate,
 //                defaults.removeObject(forKey: key)
 //            }
 //        }
-//
-//
-//
-//        UserDefaults.standard.synchronize()
 //        UserDefaults.standard.synchronize()
         let appDelegate = UIApplication.shared.delegate as! AppDelegate
         appDelegate.setupLoginNavigationController()
@@ -155,19 +180,30 @@ class MyProfileViewController: UIViewController,UIImagePickerControllerDelegate,
         
     }
     @IBAction func submitButtonDidClicked(_ sender: UIButton) {
-        DispatchQueue.main.async {
-            self.loadingIndicator.alpha = 0.9
-            self.loadingIndicator.center = self.view.center
-            self.view.addSubview(self.loadingIndicator)
-        }
+        if validateAllFields() {
+            DispatchQueue.main.async {
+                self.loadingIndicator.alpha = 0.9
+                self.loadingIndicator.center = self.view.center
+                self.view.addSubview(self.loadingIndicator)
+            }
 
-        sendUserData(requestURL: ACCOUNT_SETTING_URL) { [weak self] (dict) in
-            if let strongSelf = self {
-                print(dict["errorCode"] as! String)
-                DispatchQueue.main.async {
-                    strongSelf.loadingIndicator.alpha = 0
+            sendUserData(requestURL: ACCOUNT_SETTING_URL) { [weak self] (dict) in
+                if let strongSelf = self {
+                    print(dict["errorCode"] as! String)
+                    DispatchQueue.main.async {
+                        strongSelf.loadingIndicator.alpha = 0
+                        UIView.animate(withDuration: 0.5, animations: {
+                            self?.snackBar.frame.origin.y = (self?.window.frame.height)! - 50
+
+                        })
+                        UIView.animate(withDuration: 0.5, delay: 2.0, options: UIViewAnimationOptions(rawValue: 0), animations: {
+                            self?.snackBar.frame.origin.y = (self?.window.frame.height)! + 50
+                        }, completion: nil)
+                    }
                 }
             }
+        } else {
+            self.displayAlertView("All fields are compulsory", message: "Do not leave any field empty", handler: nil)
         }
     }
 
@@ -176,7 +212,7 @@ class MyProfileViewController: UIViewController,UIImagePickerControllerDelegate,
     {
         let size = CGSize(width: 420, height: 225)
         var image = info[UIImagePickerControllerOriginalImage] as? UIImage
-        image = image?.crop(to: size)
+        image = image?.resize(toTargetSize: size) // image?.crop(to: size)
         profileImage.image = image!
 
         self.dismiss(animated: true) {
@@ -232,9 +268,6 @@ extension MyProfileViewController {
             if #available(iOS 11.0, *){
                 guard let keyboard = (notification.userInfo?[UIKeyboardFrameEndUserInfoKey] as? NSValue)?.cgRectValue else {return}
 
-//                self.navigationItem.leftBarButtonItem = nil
-//                self.navigationItem.rightBarButtonItem = nil
-//                self.navigationItem.setHidesBackButton(true, animated: true)
                 self.navigationController?.navigationBar.isHidden = true
 
                 let height = view.frame.origin.y - keyboard.height + 80
@@ -243,13 +276,8 @@ extension MyProfileViewController {
 
                 keyboardIsShown = true
             } else{
-                guard let keyboard = (notification.userInfo?[UIKeyboardFrameBeginUserInfoKey] as? NSValue)?.cgRectValue else {return}
+                guard let keyboard = (notification.userInfo?[UIKeyboardFrameEndUserInfoKey] as? NSValue)?.cgRectValue else {return} // changed
 
-//                self.navigationItem.leftBarButtonItem = nil
-//                //self.navigationItem.rightBarButtonItem = nil
-//                self.favButton = nil
-//                self.signOutButton = nil
-//                self.navigationItem.setHidesBackButton(true, animated: true)
                 self.navigationController?.navigationBar.isHidden = true
 
                 let height = view.frame.origin.y - keyboard.height + 80
@@ -268,9 +296,6 @@ extension MyProfileViewController {
             if #available(iOS 11.0, *){
                 guard let keyboard = (notification.userInfo?[UIKeyboardFrameBeginUserInfoKey] as? NSValue)?.cgRectValue else {return}
 
-//                self.navigationItem.leftBarButtonItem = UIBarButtonItem(customView: backView)
-                //self.navigationItem.rightBarButtonItem = UIBarButtonItem(customView: signOut)
-                //self.navigationItem.rightBarButtonItems = [signOutButton!, favButton!]
                 self.navigationController?.navigationBar.isHidden = false
 
                 let height = view.frame.origin.y + keyboard.height - 80 //(view.frame.height) - keyboard.height
@@ -279,9 +304,6 @@ extension MyProfileViewController {
             } else {
                 guard let keyboard = (notification.userInfo?[UIKeyboardFrameBeginUserInfoKey] as? NSValue)?.cgRectValue else {return}
 
-//                self.navigationItem.leftBarButtonItem = UIBarButtonItem(customView: backView)
-                //self.navigationItem.rightBarButtonItem = UIBarButtonItem(customView: signOut)
-                //self.navigationItem.rightBarButtonItems = [signOutButton!, favButton!]
                 self.navigationController?.navigationBar.isHidden = false
 
                 let height = view.frame.origin.y + keyboard.height - 80 //(view.frame.height) - keyboard.height
@@ -309,7 +331,6 @@ extension MyProfileViewController {
     {
 
         let myUrl = NSURL(string: "http://uat.mobodesk.com/chd-api/api/?page=user_profile");
-        //let myUrl = NSURL(string: "http://www.boredwear.com/utils/postImage.php");
 
         let request = NSMutableURLRequest(url:myUrl! as URL);
         request.httpMethod = "POST";
@@ -348,9 +369,6 @@ extension MyProfileViewController {
         if(imageData==nil)  { return; }
 
         request.httpBody = createBodyWithParameters(parameters: param, filePathKey: "user_profile", imageDataKey: imageData! as NSData, boundary: boundary) as Data
-
-
-        // myActivityIndicator.startAnimating();
 
         let task = URLSession.shared.dataTask(with: request as URLRequest) {
             data, response, error in
@@ -435,6 +453,11 @@ extension MyProfileViewController {
     }
 
     func getUserData() {
+        let reachability = Reachability()
+        let status = reachability?.currentReachabilityStatus
+        if status == .notReachable {
+            print("No Internet")
+        } else {
         DispatchQueue.main.async {
             self.loadingIndicator.center = self.view.center
             self.loadingIndicator.alpha = 0.9
@@ -491,7 +514,7 @@ extension MyProfileViewController {
             }
             }.resume()
     }
-
+    }
 
 
 }
@@ -506,54 +529,72 @@ extension NSMutableData {
 
 extension UIImage {
 
-    func crop(to:CGSize) -> UIImage {
-        guard let cgimage = self.cgImage else { return self }
+    func resize(toTargetSize targetSize: CGSize) -> UIImage? {
 
-        let contextImage: UIImage =  UIImage.init(cgImage: cgimage) //UIImage(CGImage: cgimage)
+        let newScale = self.scale // change this if you want the output image to have a different scale
+        let originalSize = self.size
 
-        let contextSize: CGSize = contextImage.size
+        let widthRatio = targetSize.width / originalSize.width
+        let heightRatio = targetSize.height / originalSize.height
 
-        //Set to square
-        var posX: CGFloat = 0.0
-        var posY: CGFloat = 0.0
-        let cropAspect: CGFloat = to.width / to.height
-
-        var cropWidth: CGFloat = to.width
-        var cropHeight: CGFloat = to.height
-
-        if to.width > to.height { //Landscape
-            cropWidth = contextSize.width
-            cropHeight = contextSize.width / cropAspect
-            posY = (contextSize.height - cropHeight) / 2
-        } else if to.width < to.height { //Portrait
-            cropHeight = contextSize.height
-            cropWidth = contextSize.height * cropAspect
-            posX = (contextSize.width - cropWidth) / 2
-        } else { //Square
-            if contextSize.width >= contextSize.height { //Square on landscape (or square)
-                cropHeight = contextSize.height
-                cropWidth = contextSize.height * cropAspect
-                posX = (contextSize.width - cropWidth) / 2
-            }else{ //Square on portrait
-                cropWidth = contextSize.width
-                cropHeight = contextSize.width / cropAspect
-                posY = (contextSize.height - cropHeight) / 2
-            }
+        // Figure out what our orientation is, and use that to form the rectangle
+        let newSize: CGSize
+        if widthRatio > heightRatio {
+            newSize = CGSize(width: floor(originalSize.width * heightRatio), height: floor(originalSize.height * heightRatio))
+        } else {
+            newSize = CGSize(width: floor(originalSize.width * widthRatio), height: floor(originalSize.height * widthRatio))
         }
 
-        let rect: CGRect = CGRect(x: posX, y: posY, width: cropWidth, height: cropHeight)
+        // This is the rect that we've calculated out and this is what is actually used below
+        let rect = CGRect(origin: .zero, size: newSize)
 
-        // Create bitmap image from context using the rect
-        let imageRef: CGImage = ((contextImage.cgImage)?.cropping(to: rect))! //CGImageCreateWithImageInRect(contextImage.cgImage!, rect)!
+        // Actually do the resizing to the rect using the ImageContext stuff
+        if #available(iOS 10.0, *) {
+            let format = UIGraphicsImageRendererFormat()
+            format.scale = newScale
+            format.opaque = true
 
-        // Create a new image based on the imageRef and rotate back to the original orientation
-        let cropped: UIImage = UIImage.init(cgImage: imageRef, scale: self.scale, orientation: self.imageOrientation)
+            let newImage = UIGraphicsImageRenderer(bounds: rect, format: format).image() { _ in
+                self.draw(in: rect)
 
-        UIGraphicsBeginImageContextWithOptions(to, true, self.scale)
-        cropped.draw(in: CGRect(x: 0, y: 0, width: to.width, height: to.height))
-        let resized = UIGraphicsGetImageFromCurrentImageContext()
-        UIGraphicsEndImageContext()
+            }
+            return newImage
+        } else {
+            // Fallback on earlier versions
+            return UIImage(named: "user-placeholder")
+        }
 
-        return resized!
     }
 }
+
+extension MyProfileViewController: UITextFieldDelegate {
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+        self.view.endEditing(true)
+        return true
+    }
+
+    func validateAllFields() -> Bool {
+        if (firstName.text?.isEmpty)! || (lastName.text?.isEmpty)! || (streetTextfield.text?.isEmpty)! || (cityTextfield.text?.isEmpty)! || (stateTextField.text?.isEmpty)! || (countryTextfield.text?.isEmpty)! || (zipTextfield.text?.isEmpty)! {
+            return false
+        } else {
+            return true
+        }
+    }
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

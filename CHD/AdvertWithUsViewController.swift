@@ -234,7 +234,7 @@ class AdvertWithUsViewController: FormViewController {
             }
             <<< URLRow(){
                 $0.title = "Website URL"
-                $0.placeholder = "www.example.com"
+                $0.placeholder = "https://example.com"
                 $0.tag = "website"
                 $0.add(rule: RuleURL())
                 $0.add(rule: RuleRequired())

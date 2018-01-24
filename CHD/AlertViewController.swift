@@ -23,5 +23,18 @@ class BaseViewController: UIViewController {
             
         }
     }
-    
+
+    func displayAlertViewTextField(_ title: String, message: String, textField: UITextField, handler: ((UIAlertAction) -> ())?) {
+        let alert = UIAlertController(title: title, message: message, preferredStyle: .alert)
+        let action = UIAlertAction(title: "OK", style: .default) { (_) in
+            textField.becomeFirstResponder()
+        }
+        alert.addAction(action)
+            if let completion = handler {
+                completion(action)
+            }
+            self.present(alert, animated: true, completion: nil)
+
+        }
+
 }

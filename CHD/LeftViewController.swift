@@ -11,7 +11,7 @@ import UIKit
 
 class LeftViewController: UIViewController {
     var tableView: UITableView!
-    var items = ["Home", "Health Center", "Beauty & Skin Care", "Fitness", "Health Conditions", "Health News", "Reviews"]
+    var items = ["Home", "Health Center", "Beauty & Skin Care", "Fitness", "Health Conditions", "Health News", "Reviews", "favourites"]
     var anotherItems = ["My Profile" ,"Advertise with Us", "Contact Us", "Terms of Use", "About Us", "Share This App"]
     var didselected: ((IndexPath, Int, Int) -> ())?
 
@@ -188,6 +188,11 @@ extension LeftViewController: UITableViewDelegate, UITableViewDataSource {
         let item = indexPath.section == 0 ? items[indexPath.row] : anotherItems[indexPath.row]
         cell.selectionStyle = .none
         cell.textLabel?.text = item
+        if indexPath.row == 7 {
+            let plusButton = UIImageView(image: #imageLiteral(resourceName: "icons8-plus-100"))
+            plusButton.frame.size = CGSize(width: 15, height: 15)
+            cell.accessoryView = plusButton
+        }
         return cell
     }
 

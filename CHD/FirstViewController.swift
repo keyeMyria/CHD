@@ -1,4 +1,4 @@
-//
+ //
 //  ViewController.swift
 //  tabView
 //
@@ -35,6 +35,25 @@ class FirstViewController: UITableViewController {
     
     var backGroundView: UIView!
     var shareView: UIView!
+
+    private lazy var snackBar: UIView = {
+        let bar = UIView()
+        bar.frame.size = CGSize(width: view.frame.width, height: 50)
+        bar.backgroundColor = .black
+
+        let tick = UIImageView()
+        tick.image = #imageLiteral(resourceName: "icons8-ok_filled")
+        tick.frame = CGRect(x: 20, y: 16, width: 20, height: 20)
+        bar.addSubview(tick)
+
+        let label = UILabel()
+        label.text = "Saved to Favourite!"
+        label.textColor = .white
+        label.font = UIFont.systemFont(ofSize: 13)
+        label.frame = CGRect(x: 50, y: 16, width: 250, height: 20)
+        bar.addSubview(label)
+        return bar
+    }()
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -42,7 +61,22 @@ class FirstViewController: UITableViewController {
         self.title = "Home"
         
         window = (appDelegate.window)!
-        
+
+        snackBar.frame.origin.y = window.frame.height + 50
+        snackBar.frame.origin.x = 0
+        window.addSubview(snackBar)
+
+        if UserDefaults.standard.bool(forKey: "showSnackBar") {
+            UserDefaults.standard.set(false, forKey: "showSnackBar")
+            UIView.animate(withDuration: 0.5, animations: {
+                self.snackBar.frame.origin.y = self.window.frame.height - 50
+
+            })
+            UIView.animate(withDuration: 0.5, delay: 2.0, options: UIViewAnimationOptions(rawValue: 0), animations: {
+                self.snackBar.frame.origin.y = self.window.frame.height + 50
+            }, completion: nil)
+        }
+
         //Google Analyatics Code
         guard let tracker = GAI.sharedInstance().defaultTracker else { return }
         tracker.set(kGAIScreenName, value: "Home - Recent Post")
@@ -56,8 +90,7 @@ class FirstViewController: UITableViewController {
         
         tableView.register(UINib(nibName: "PostTableViewCell", bundle: Bundle.main), forCellReuseIdentifier: "cell")
         tableView.register(UINib(nibName: "LoadingCell", bundle: Bundle.main), forCellReuseIdentifier: "loading")
-        
-        
+
         self.leftViewController = LeftViewController()
         self.leftViewController.didselected = { [weak self]  (indexPath, section, tag) in
             if let strongSelf = self {
@@ -131,6 +164,11 @@ class FirstViewController: UITableViewController {
                             reviewVC.APIReference = "review"
                             reviewVC.hidesBottomBarWhenPushed = true
                             strongSelf.navigationController?.pushViewController(reviewVC, animated: true)
+                        case 7:
+                            print("Favourites")
+                            let favVC = ChooseFavViewController()
+                            favVC.hidesBottomBarWhenPushed = true
+                            strongSelf.navigationController?.pushViewController(favVC, animated: true)
                         default:
                             print("bello")
                         }
@@ -326,10 +364,6 @@ class FirstViewController: UITableViewController {
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-
-//        DispatchQueue.main.async {
-//            self.tableView.reloadData()
-//        }
 
         self.navigationController?.navigationBar.backIndicatorImage = nil
         self.navigationController?.navigationBar.isTranslucent = false

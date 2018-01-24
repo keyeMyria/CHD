@@ -297,7 +297,7 @@ class LoginViewController: BaseViewController {
     @objc func loginButtonDidClicked(_ sender: UIButton) {
         print("logged In button did clicked")
         if (passwordTextField.text?.characters.count)! < 5 {
-            self.displayAlertView("Password should have minimum 6 characters", message: "please enter passwod having greater than 6 characters.", handler: { (_) in self.passwordTextField.becomeFirstResponder() })
+            self.displayAlertViewTextField("Password should have minimum 6 characters", message: "please enter passwod having greater than 6 characters.", textField: passwordTextField, handler: nil)
         } else {
         self.view.endEditing(true)
         loadingIndicator.center = view.center
@@ -384,6 +384,7 @@ class LoginViewController: BaseViewController {
         UserDefaults.standard.set(true, forKey: "isLoggedInSkipped")
         UserDefaults.standard.set("", forKey: "userID")
         let homeViewCtrl = ChooseFavViewController()
+        isSkipped = true
         self.navigationController?.pushViewController(homeViewCtrl, animated: true)
     }
     
@@ -420,6 +421,29 @@ class LoginViewController: BaseViewController {
         self.view.endEditing(true)
     }
 
+    func isValidEmailAddress(emailAddressString: String) -> Bool {
+
+        var returnValue = true
+        let emailRegEx = "[A-Z0-9a-z.-_]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,3}"
+
+        do {
+            let regex = try NSRegularExpression(pattern: emailRegEx)
+            let nsString = emailAddressString as NSString
+            let results = regex.matches(in: emailAddressString, range: NSRange(location: 0, length: nsString.length))
+
+            if results.count == 0
+            {
+                returnValue = false
+            }
+
+        } catch let error as NSError {
+            print("invalid regex: \(error.localizedDescription)")
+            returnValue = false
+        }
+
+        return  returnValue
+    }
+
     deinit {
         NotificationCenter.default.removeObserver(self, name: .UIKeyboardWillShow, object: nil)
         NotificationCenter.default.removeObserver(self, name: .UIKeyboardWillHide, object: nil)
@@ -433,6 +457,8 @@ extension String {
         let emailTest = NSPredicate(format:"SELF MATCHES %@", emailRegEx)
         return emailTest.evaluate(with: self)
     }
+
+
 }
 
 extension LoginViewController: UITextFieldDelegate {
@@ -440,7 +466,8 @@ extension LoginViewController: UITextFieldDelegate {
         if (emailTextField.text?.isEmpty)! {
             //do nothing
         } else {
-            guard let isValid = emailTextField.text?.isValidEmail() else { return }
+            let isValid = isValidEmailAddress(emailAddressString: emailTextField.text!)
+            //guard let isValid = emailTextField.text?.isValidEmail() else { return }
             if !isValid {
                 displayAlertView("This is not an Email", message: "please enter a valid email address", handler: { (_) in
                     self.emailTextField.becomeFirstResponder()
