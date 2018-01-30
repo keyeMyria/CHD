@@ -35,6 +35,7 @@ class APIManager {
         let isCategoryAvailable = APIManager.sharedInstance.isKeyPresentInUserDefaults(key: "category")
         if isCategoryAvailable{
             categoryArray = UserDefaults.standard.value(forKey: "category") as! [Int]
+            print("category array - ", categoryArray)
         }
 
         var requestDict:[String: Any]
@@ -152,6 +153,7 @@ class APIManager {
         if UserDefaults.standard.bool(forKey: "isFromChooseCategory") {
             UserDefaults.standard.set(false, forKey: "isFromChooseCategory")
             self.array.removeAll()
+            self.mutablePageCount = 1
             return 0
         }
         let count = array.count

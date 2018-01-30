@@ -11,7 +11,7 @@ import UIKit
 var activityIndicator: UIActivityIndicatorView = {
     let indicator = UIActivityIndicatorView()
     indicator.activityIndicatorViewStyle = .whiteLarge
-    //indicator.color = .black
+    indicator.color = .black
     indicator.hidesWhenStopped = true
     return indicator
 }()

@@ -44,6 +44,7 @@
 		9153BD322010D3C8000D0DC3 /* ChooseFavViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9153BD312010D3C7000D0DC3 /* ChooseFavViewController.swift */; };
 		9180817C200F235D009504D3 /* MyProfileViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9180817A200F235D009504D3 /* MyProfileViewController.swift */; };
 		9180817D200F235D009504D3 /* MyProfileViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 9180817B200F235D009504D3 /* MyProfileViewController.xib */; };
+		9199B31E2020447700DBAA4B /* TermsOfUseViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9199B31D2020447700DBAA4B /* TermsOfUseViewController.swift */; };
 		91B6E1941FED062B00A9A532 /* ReachabilityManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 91B6E1931FED062B00A9A532 /* ReachabilityManager.swift */; };
 		F93F4CEE91A688C662FF93E7 /* Pods_CHD.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 980EFB060680880E445D8873 /* Pods_CHD.framework */; };
 /* End PBXBuildFile section */
@@ -112,6 +113,7 @@
 		9153BD312010D3C7000D0DC3 /* ChooseFavViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChooseFavViewController.swift; sourceTree = "<group>"; };
 		9180817A200F235D009504D3 /* MyProfileViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyProfileViewController.swift; sourceTree = "<group>"; };
 		9180817B200F235D009504D3 /* MyProfileViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = MyProfileViewController.xib; sourceTree = "<group>"; };
+		9199B31D2020447700DBAA4B /* TermsOfUseViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TermsOfUseViewController.swift; sourceTree = "<group>"; };
 		91B6E1931FED062B00A9A532 /* ReachabilityManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ReachabilityManager.swift; sourceTree = "<group>"; };
 		91C68CDD2005F25300847C97 /* CHD.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = CHD.entitlements; sourceTree = "<group>"; };
 		980EFB060680880E445D8873 /* Pods_CHD.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_CHD.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -204,6 +206,7 @@
 				911C587C1FEA6D6D00D2CB57 /* SearchTableViewController.swift */,
 				9180817A200F235D009504D3 /* MyProfileViewController.swift */,
 				9180817B200F235D009504D3 /* MyProfileViewController.xib */,
+				9199B31D2020447700DBAA4B /* TermsOfUseViewController.swift */,
 			);
 			path = CHD;
 			sourceTree = "<group>";
@@ -523,6 +526,7 @@
 				911C588A1FEA6D7000D2CB57 /* SearchTableViewController.swift in Sources */,
 				911C58931FEA6D7000D2CB57 /* FirstViewController.swift in Sources */,
 				911C588E1FEA6D7000D2CB57 /* HealthConditionViewController.swift in Sources */,
+				9199B31E2020447700DBAA4B /* TermsOfUseViewController.swift in Sources */,
 				911C58711FEA6CEF00D2CB57 /* LoadingCell.swift in Sources */,
 				911C586A1FEA6CC000D2CB57 /* Constants.swift in Sources */,
 				911C58891FEA6D7000D2CB57 /* ContactUsViewController.swift in Sources */,

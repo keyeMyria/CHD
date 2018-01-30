@@ -206,7 +206,7 @@ class FirstViewController: UITableViewController {
                             break
                         case 3:
                             print("Terms of Use")
-                            let aboutUs = AboutUsViewController()
+                            let aboutUs = TermsOfUseViewController()
                             aboutUs.pageTitle = "Terms of Use"
                             aboutUs.pageURL = TERMS_OF_USE_URL
                             aboutUs.hidesBottomBarWhenPushed = true
@@ -380,8 +380,9 @@ class FirstViewController: UITableViewController {
         imageView.clipsToBounds = true
         imageView.frame = CGRect(x: 0, y: 0, width: 30, height: 30)
         imageView.contentMode = .scaleAspectFit
+        let logoButton = UIBarButtonItem(customView: imageView)
         let menuButton = UIBarButtonItem(image: #imageLiteral(resourceName: "menu"), style: .plain, target: self, action: #selector(openDrawer))
-        self.navigationItem.leftBarButtonItems = [menuButton]
+        self.navigationItem.leftBarButtonItems = [menuButton, logoButton]
         self.navigationItem.rightBarButtonItem = UIBarButtonItem(image: #imageLiteral(resourceName: "icons8-search"), style: .plain, target: self, action: #selector(searchButtonDidClicked))
         
         APIFailuareHandler()
@@ -499,29 +500,29 @@ extension FirstViewController {
 extension FirstViewController {
     func APIFailuareHandler() {
         if array.count == 0 {
-            APIManager.sharedInstance.getResentPostsData(pageCount: APIManager.sharedInstance.mutablePageCount, completion: {
+            APIManager.sharedInstance.getResentPostsData(pageCount: 1, completion: {
                 
             })
         }
     }
-
-    override func scrollViewWillEndDragging(_ scrollView: UIScrollView, withVelocity velocity: CGPoint, targetContentOffset: UnsafeMutablePointer<CGPoint>) {
-
-        if(velocity.y>0) {
-            //Code will work without the animation block.I am using animation block incase if you want to set any delay to it.
-            UIView.animate(withDuration: 2.5, delay: 0, options: UIViewAnimationOptions(), animations: {
-                self.navigationController?.setNavigationBarHidden(true, animated: true)
-                self.tabBarController?.tabBar.isHidden = true
-                print("Hide")
-            }, completion: nil)
-
-        } else {
-            UIView.animate(withDuration: 2.5, delay: 0, options: UIViewAnimationOptions(), animations: {
-                self.navigationController?.setNavigationBarHidden(false, animated: true)
-                self.tabBarController?.tabBar.isHidden = false
-                print("Unhide")
-            }, completion: nil)
-        }
-    }
+//
+//    override func scrollViewWillEndDragging(_ scrollView: UIScrollView, withVelocity velocity: CGPoint, targetContentOffset: UnsafeMutablePointer<CGPoint>) {
+//
+//        if(velocity.y>0) {
+//            //Code will work without the animation block.I am using animation block incase if you want to set any delay to it.
+//            UIView.animate(withDuration: 2.5, delay: 0, options: UIViewAnimationOptions(), animations: {
+//                self.navigationController?.setNavigationBarHidden(true, animated: true)
+//                self.tabBarController?.tabBar.isHidden = true
+//                print("Hide")
+//            }, completion: nil)
+//
+//        } else {
+//            UIView.animate(withDuration: 2.5, delay: 0, options: UIViewAnimationOptions(), animations: {
+//                self.navigationController?.setNavigationBarHidden(false, animated: true)
+//                self.tabBarController?.tabBar.isHidden = false
+//                print("Unhide")
+//            }, completion: nil)
+//        }
+//    }
 }
 

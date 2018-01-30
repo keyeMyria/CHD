@@ -331,7 +331,7 @@ extension MyProfileViewController {
     func myImageUploadRequest()
     {
 
-        let myUrl = NSURL(string: "http://uat.mobodesk.com/chd-api/api/?page=user_profile");
+        let myUrl = NSURL(string: IMAGE_UPLOAD_URL);
 
         let request = NSMutableURLRequest(url:myUrl! as URL);
         request.httpMethod = "POST";
@@ -466,7 +466,8 @@ extension MyProfileViewController {
         }
         guard let userID = UserDefaults.standard.string(forKey: "userID") else {return}
 
-        let url = URL(string: "http://uat.mobodesk.com/chd-api/api/?user_id=\(userID)")
+        //let url = URL(string: "http://uat.mobodesk.com/chd-api/api/?user_id=\(userID)")
+        let url = URL(string: GET_USER_DATA_URL + "\(userID)")
         var request = URLRequest(url: url!)
         request.httpMethod = GET
 

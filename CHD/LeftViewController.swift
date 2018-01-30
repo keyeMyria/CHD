@@ -16,9 +16,6 @@ class LeftViewController: UIViewController {
     var didselected: ((IndexPath, Int, Int) -> ())?
 
     var socialMediaView: UIStackView!
-    var socialMediaViews: UIView!
-    let anotherView = UIView()
-    var isExpanded: Bool = false
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = .white
@@ -63,18 +60,6 @@ class LeftViewController: UIViewController {
         subTitleView.frame.origin.y = 110
         subTitleView.frame.origin.x = 0
         headerView.addSubview(subTitleView)
-        
-//        let nameLabel = UILabel.init(frame: CGRect.init(x: 10, y: Int(headerView.frame.height - 40), width: Int(headerView.frame.size.width-20), height: 30))
-//        nameLabel.text = "Consumer Health Digest"
-//        nameLabel.textColor = UIColor.white
-//        nameLabel.font = UIFont.boldSystemFont(ofSize: 20)
-//        headerView.addSubview(nameLabel)
-//
-//        let tagLabel = UILabel.init(frame: CGRect.init(x: 10, y: Int(headerView.frame.height - 15) , width: Int(headerView.frame.size.width-20), height: 15))
-//        tagLabel.text = "Your Trusted Source for Good Health"
-//        tagLabel.textColor = UIColor.white
-//        tagLabel.font = UIFont.italicSystemFont(ofSize: 12)
-//        headerView.addSubview(tagLabel)
 
         tableView.tableHeaderView = headerView
         tableView.separatorStyle = .none
@@ -128,88 +113,12 @@ class LeftViewController: UIViewController {
         socialMediaView.distribution = .fillEqually
         socialMediaView.frame = CGRect(x: 0, y: 0, width: tableView.frame.width, height: 30)
     }
-
-    func setupBottomViews() {
-        let insta = UIButton()
-        insta.backgroundColor = .white
-        insta.setImage(#imageLiteral(resourceName: "icons8-instagram_new"), for: .normal)
-        insta.tag = 0
-        insta.addTarget(self, action: #selector(openSocialMediaView(_:)), for: .touchUpInside)
-        let fb = UIButton()
-        fb.backgroundColor = .white
-        fb.setImage(#imageLiteral(resourceName: "icons8-facebook"), for: .normal)
-        fb.tag = 1
-        fb.addTarget(self, action: #selector(openSocialMediaView(_:)), for: .touchUpInside)
-        let LI = UIButton()
-        LI.backgroundColor = .white
-        LI.setImage(#imageLiteral(resourceName: "icons8-linkedin"), for: .normal)
-        LI.tag = 2
-        LI.addTarget(self, action: #selector(openSocialMediaView(_:)), for: .touchUpInside)
-        let GPlus = UIButton()
-        GPlus.backgroundColor = .white
-        GPlus.setImage(#imageLiteral(resourceName: "icons8-google_plus_squared"), for: .normal)
-        GPlus.tag = 3
-        GPlus.addTarget(self, action: #selector(openSocialMediaView(_:)), for: .touchUpInside)
-        let twitter = UIButton()
-        twitter.backgroundColor = .white
-        twitter.setImage(#imageLiteral(resourceName: "icons8-twitter"), for: .normal)
-        twitter.tag = 4
-        twitter.addTarget(self, action: #selector(openSocialMediaView(_:)), for: .touchUpInside)
-        let pinterest = UIButton()
-        pinterest.backgroundColor = .white
-        pinterest.setImage(#imageLiteral(resourceName: "icons8-pinterest"), for: .normal)
-        pinterest.tag = 5
-        pinterest.addTarget(self, action: #selector(openSocialMediaView(_:)), for: .touchUpInside)
-        let youTube = UIButton()
-        youTube.backgroundColor = .white
-        youTube.setImage(#imageLiteral(resourceName: "icons8-youtube"), for: .normal)
-        youTube.tag = 6
-        youTube.addTarget(self, action: #selector(openSocialMediaView(_:)), for: .touchUpInside)
-
-        let seeMore = UIButton()
-        seeMore.backgroundColor = .white
-        seeMore.setImage(#imageLiteral(resourceName: "icons8-plus-100"), for: .normal)
-        seeMore.addTarget(self, action: #selector(expandSocialMediaView), for: .touchUpInside)
-
-//        socialMediaView = UIStackView(arrangedSubviews: [GPlus, seeMore])
-//        socialMediaView.backgroundColor = .blue
-//        socialMediaView.distribution = .fillProportionally
-//        socialMediaView.frame = CGRect(x: 0, y: 0, width: 10, height: 35)
-
-        socialMediaViews = UIView()
-        socialMediaViews.backgroundColor = .blue
-        socialMediaViews.frame = CGRect(x: 0, y: 0, width: 50, height: 35)
-        socialMediaViews.addSubview(anotherView)
-
-        anotherView.backgroundColor = .red
-        anotherView.frame = CGRect(x: 0, y: 0, width: 50, height: 35)
-        anotherView.addSubview(GPlus)
-        GPlus.frame = CGRect(x: 0, y: 0, width: 25, height: 25)
-        anotherView.addSubview(seeMore)
-        seeMore.frame = CGRect(x: 25, y: 0, width: 25, height: 25)
-
-
-    }
     
     @objc func openSocialMediaView(_ sender: UIButton) {
         print(sender.tag)
        
         self.didselected?(IndexPath.init(row: -1, section: -1), -1,sender.tag)
         self.dismiss(animated: true, completion: nil)
-    }
-
-    @objc func expandSocialMediaView() {
-        if !isExpanded {
-            UIView.animate(withDuration: 0.5) {
-                self.isExpanded = true
-                self.anotherView.frame = CGRect(x: 0, y: 0, width: 300, height: 35)
-            }
-        } else {
-            UIView.animate(withDuration: 0.5) {
-                self.isExpanded = false
-                self.anotherView.frame = CGRect(x: 0, y: 0, width: 50, height: 35)
-            }
-        }
     }
 }
 

@@ -245,7 +245,7 @@ class ChooseFavViewController: BaseViewController, UICollectionViewDelegateFlowL
 
         //let userID = UserDefaults.standard.value(forKey: "userID") as! String
 
-        let link = "http://uat.mobodesk.com/chd-api/api/?page=profile_favourite&user_id=\(userID)"
+        let link = GET_USER_CATEGORY_LIST_URL + "\(userID)"
 
 //        LoginViewController.sharedInstance.loginWebService(requestParaDict: nil, requestMethod: GET, requestURL: link) { (result) in
 //            print(result.result?.category_id)
@@ -283,8 +283,8 @@ class ChooseFavViewController: BaseViewController, UICollectionViewDelegateFlowL
         loadingIndicator.alpha = 0.9
         //let userID: String = UserDefaults.standard.value(forKey: "userID") as! String
         let vc = FirstViewController()
-        let unique = Array(Set(favArray))
-        favArray = unique
+//        let unique = Array(Set(favArray))
+//        favArray = unique
         print(favArray)
         if !userID.isEmpty {
             let requestParamers = ["user_id": userID,
