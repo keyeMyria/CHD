@@ -87,6 +87,10 @@ class FirstViewController: UITableViewController {
         tableView.rowHeight = 50
         tableView.estimatedRowHeight = UITableViewAutomaticDimension
         tableView.tableFooterView = UIView()
+
+        self.tableView.estimatedRowHeight = 0;
+        self.tableView.estimatedSectionHeaderHeight = 0;
+        self.tableView.estimatedSectionFooterHeight = 0;
         
         tableView.register(UINib(nibName: "PostTableViewCell", bundle: Bundle.main), forCellReuseIdentifier: "cell")
         tableView.register(UINib(nibName: "LoadingCell", bundle: Bundle.main), forCellReuseIdentifier: "loading")
@@ -293,7 +297,7 @@ class FirstViewController: UITableViewController {
             }
             
         }
-        
+
         APIManager.sharedInstance.delegate = {
             DispatchQueue.main.async {
                 self.tableView.reloadData()
@@ -505,24 +509,5 @@ extension FirstViewController {
             })
         }
     }
-//
-//    override func scrollViewWillEndDragging(_ scrollView: UIScrollView, withVelocity velocity: CGPoint, targetContentOffset: UnsafeMutablePointer<CGPoint>) {
-//
-//        if(velocity.y>0) {
-//            //Code will work without the animation block.I am using animation block incase if you want to set any delay to it.
-//            UIView.animate(withDuration: 2.5, delay: 0, options: UIViewAnimationOptions(), animations: {
-//                self.navigationController?.setNavigationBarHidden(true, animated: true)
-//                self.tabBarController?.tabBar.isHidden = true
-//                print("Hide")
-//            }, completion: nil)
-//
-//        } else {
-//            UIView.animate(withDuration: 2.5, delay: 0, options: UIViewAnimationOptions(), animations: {
-//                self.navigationController?.setNavigationBarHidden(false, animated: true)
-//                self.tabBarController?.tabBar.isHidden = false
-//                print("Unhide")
-//            }, completion: nil)
-//        }
-//    }
 }
 

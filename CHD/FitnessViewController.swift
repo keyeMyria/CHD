@@ -30,10 +30,16 @@ class FitnessViewController: UITableViewController {
         tableView.rowHeight = 50
         tableView.estimatedRowHeight = UITableViewAutomaticDimension
         tableView.tableFooterView = UIView()
+
+        self.tableView.estimatedRowHeight = 0;
+        self.tableView.estimatedSectionHeaderHeight = 0;
+        self.tableView.estimatedSectionFooterHeight = 0;
         
         tableView.register(UINib(nibName: "PostTableViewCell", bundle: Bundle.main), forCellReuseIdentifier: "cell")
         tableView.register(UINib(nibName: "LoadingCell", bundle: Bundle.main), forCellReuseIdentifier: "loading")
-        
+        if #available(iOS 11.0, *) {
+            tableView.contentInsetAdjustmentBehavior = .never
+        }
         fetchData()
     }
 
@@ -50,10 +56,10 @@ class FitnessViewController: UITableViewController {
                 } else {
                     strongSelf.shouldShowLoadingCell = false
                 }
+
                 for i in 0..<array.count{
                     strongSelf.array.append(array[i])
                 }
-                print(array.count)
                 strongSelf.count += 1
                 DispatchQueue.main.async {
                     strongSelf.tableView.reloadData()

@@ -44,6 +44,10 @@ class SearchTableViewController: UITableViewController, UISearchBarDelegate {
         tableView.rowHeight = 50
         tableView.estimatedRowHeight = UITableViewAutomaticDimension
         tableView.tableFooterView = UIView()
+
+        self.tableView.estimatedRowHeight = 0;
+        self.tableView.estimatedSectionHeaderHeight = 0;
+        self.tableView.estimatedSectionFooterHeight = 0;
         
         tableView.register(UINib(nibName: "PostTableViewCell", bundle: Bundle.main), forCellReuseIdentifier: "cell")
         tableView.register(UINib(nibName: "LoadingCell", bundle: Bundle.main), forCellReuseIdentifier: "loading")

@@ -196,6 +196,9 @@ class ChooseFavViewController: BaseViewController, UICollectionViewDelegateFlowL
     }
 
     override func viewWillAppear(_ animated: Bool) {
+        if #available(iOS 11.0, *) {
+            self.navigationController?.navigationBar.prefersLargeTitles = false
+        }
         let image = UIImage()
         self.navigationController?.navigationBar.setBackgroundImage(image, for: UIBarMetrics.default)
         self.navigationController?.navigationBar.shadowImage = image
